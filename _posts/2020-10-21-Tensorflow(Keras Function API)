@@ -1,0 +1,86 @@
+---
+title: "Tensorflow(Keras Function API)공부"
+---
+
+## 기능적 API
+
+keras모델을 하나 만들어보자 우선 입력노드를 생성하도록하자
+```
+inputs = keras.Input(shpae = (784,))
+img_inputs = keras.Input(shape = (32,32,3))
+
+inputs.shape
+
+결과
+TensorShape([None, 784])
+```
+ 이 inputs객체에서 레이어를 호풀하여 레이어 그래프에 새 노드를 만든다
+ ```
+ dense = keras.Dense(64, activation = 'relu')
+ x = dense(inputs)
+ 
+ x = layers.Dense(64, activation="relu")(x)
+outputs = layers.Dense(10)(x)
+ ```
+ 여기까지 완료하면 input과 output을 인수로가지는 모델을 만들 수 있다.
+ ```
+ model = keras.Model(inputs=inputs, outputs=outputs, name="mnist_model")
+ 
+ model.summary
+ 
+ 결과:
+ Model: "mnist_model"
+_________________________________________________________________
+Layer (type)                 Output Shape              Param #   
+=================================================================
+input_1 (InputLayer)         [(None, 784)]             0         
+_________________________________________________________________
+dense (Dense)                (None, 64)                50240     
+_________________________________________________________________
+dense_1 (Dense)              (None, 64)                4160      
+_________________________________________________________________
+dense_2 (Dense)              (None, 10)                650       
+=================================================================
+Total params: 55,050
+Trainable params: 55,050
+Non-trainable params: 0
+___________________________________________________________
+ 
+ 
+ ```
+ 
+ 이는 정리된 그림으로 볼수도 있는데 
+ 
+ ```
+ keras.utils.plot_model(model , "my first model" , show_shape = "True")
+ ```
+ 
+ ### 학습 , 평가 , 추론
+ 
+ 학습과 평가 그리고 추론은 sequential모델을 구현하는 것과 같은 방식이다 MNIST 이미지데이터를 로드하고 벡터로 변형하고 데이터에 모델을 학습시킨 다음 테스트 데이터에서 모델을 평가한다.
+ 
+ ```
+ (x_train, y_train), (x_test, y_test) = keras.datasets.mnist.load_data()
+
+x_train = x_train.reshape(60000, 784).astype("float32") / 255
+x_test = x_test.reshape(10000, 784).astype("float32") / 255
+
+model.compile(
+    loss=keras.losses.SparseCategoricalCrossentropy(from_logits=True),
+    optimizer=keras.optimizers.RMSprop(),
+    metrics=["accuracy"],
+)
+
+history = model.fit(x_train, y_train, batch_size=64, epochs=2, validation_split=0.2)
+
+test_scores = model.evaluate(x_test, y_test, verbose=2)
+print("Test loss:", test_scores[0])
+print("Test accuracy:", test_scores[1])
+```
+
+ 
+ 
+ 
+ 
+ 
+ 
