@@ -1,5 +1,5 @@
 ---
-title : "Tensroflow의 모든것을 공부 "
+title : "Tensroflow의 모든것을 공부(순차적API) "
 ---
 
 이런저런 일이 있었지만 이번만큼은 절대 저장하고 갈것이다.
