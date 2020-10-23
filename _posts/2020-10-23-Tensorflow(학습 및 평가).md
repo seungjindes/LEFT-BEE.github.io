@@ -212,7 +212,11 @@ model.fit(
 
 3. Sequence objects if you have large datasets and you need to do a lot of custom Python-side processing that cannot be done in TensorFlow (e.g. if you rely on external libraries for data loading or preprocessing).
 
-#### Using Kras,utlis,Sequence object as input
+-------------------------------------------------------------------------------
+
+## 모르는 
+
+### Using Kras,utlis,Sequence object as input
 
 keras.utils.Sequence는 다중처리에 능하고 데이터를 shuffle할 수 있는 특징을 가진 Subclass이다. Sequence는 두가지 함수를 명시하는데
 하나는 `__getitem__` 과 다른 하나는 `__len__` 이다. `__getitem__` 은 완전한 batch를 반환한다 만약 epochs사이에서 dataset을 변형하고 시ㅍ다면 `on_epoch_end`를 실행하면 된다. 아래 예시를 보자
@@ -242,10 +246,55 @@ class CIFAR10Sequence(Sequence):
 sequence = CIFAR10Sequence(filenames, labels, batch_size)
 model.fit(sequence, epochs=10)
 ```
+#### DataGenerator.getitem()
 
 
+batch 프로세싱이 주어진 index에 따라 호출 될 때 generator는 `__getitem__`을 호출함
+결국 batch size만큼의 entry를 계산해서 리턴해줌
+예를 들어 batch size가 2이고 index가 10이라면 아래 코드에 의해 indexes에 10, 11이 리턴되고 이에 상응하는 list_IDs[10], list_IDs[11]이 list_IDs_temp에 리턴됨 이를 통해 `__data_generation(list_IDs_temp)`를 통해 알맞은 X, y가 구해짐
 
+#### DataGenerator.len()
 
+각 call request는 배치 index 0 ~ 총 batch 크기 만큼 될 수 있다.
+이부분이` __len__`을 통해 컨트롤 된다.
+
+위 부분은 아마 내가 원하는 batchisze data를 만드는 것에 의미가 있는것 같지만 아직 무슨의미인지 모르겠다...
+
+---------------------------------------------------------------
+
+### Using sample weighting and class weighting
+
+freqeuncy에 의해 가중치를 세팅하는 두가지 방법이 있다 class weight 와 sample weight이다 
+
+#### class weight 
+
+Model.fit()에 있는 class_weight인수자리에 class_weight dictionary를 넣어준다.
+이는 특정 class에 중요도를 분석하여 train model에 있어 차이를 둘 수 있다.예를 들어 0번 class가 1번 class에 비해 절반정도의 중요도를 가질경우 `Model.fit(..., class_weight={0: 1., 1: 0.5})`라고 사용가능하다. 아래에 예시를 보자 
+```
+import numpy as np
+
+class_weight = {
+    0: 1.0,
+    1: 1.0,
+    2: 1.0,
+    3: 1.0,
+    4: 1.0,
+    # Set weight "2" for class "5",
+    # making this class 2x more important
+    5: 2.0,
+    6: 1.0,
+    7: 1.0,
+    8: 1.0,
+    9: 1.0,
+}
+
+print("Fit with class weight")
+model = get_compiled_model()
+model.fit(x_train, y_train, class_weight=class_weight, batch_size=64, epochs=1)
+```
+dictionary 형태의 class_weight를 만들고 난 후 (5번 class에는 다른 항목에 비해 2배더 중요하다고 두었다) fit()에서 class_weight인수에 전달해 주었다.
+
+#### sample weight
 
 
 
