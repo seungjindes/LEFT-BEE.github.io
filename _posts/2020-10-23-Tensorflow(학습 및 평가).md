@@ -204,6 +204,49 @@ model.fit(
 
 #### Other input formats supported
 
+데이터에는 많은 종류가 있지만 특별하게 다중처리와 shuffled가 가능한 Python data generators 을 제공하는 keras.utils.Sequence class를 볼것이다 우선 각 데이터의 설명을 보도록하자
+
+1. NumPy input data if your data is small and fits in memory
+
+2. Dataset objects if you have large datasets and you need to do distributed training
+
+3. Sequence objects if you have large datasets and you need to do a lot of custom Python-side processing that cannot be done in TensorFlow (e.g. if you rely on external libraries for data loading or preprocessing).
+
+#### Using Kras,utlis,Sequence object as input
+
+keras.utils.Sequence는 다중처리에 능하고 데이터를 shuffle할 수 있는 특징을 가진 Subclass이다. Sequence는 두가지 함수를 명시하는데
+하나는 `__getitem__` 과 다른 하나는 `__len__` 이다. `__getitem__` 은 완전한 batch를 반환한다 만약 epochs사이에서 dataset을 변형하고 시ㅍ다면 `on_epoch_end`를 실행하면 된다. 아래 예시를 보자
+```
+from skimage.io import imread
+from skimage.transform import resize
+import numpy as np
+
+# Here, `filenames` is list of path to the images
+# and `labels` are the associated labels.
+
+class CIFAR10Sequence(Sequence):
+    def __init__(self, filenames, labels, batch_size):
+        self.filenames, self.labels = filenames, labels
+        self.batch_size = batch_size
+
+    def __len__(self):
+        return int(np.ceil(len(self.filenames) / float(self.batch_size)))
+
+    def __getitem__(self, idx):
+        batch_x = self.filenames[idx * self.batch_size:(idx + 1) * self.batch_size]
+        batch_y = self.labels[idx * self.batch_size:(idx + 1) * self.batch_size]
+        return np.array([
+            resize(imread(filename), (200, 200))
+               for filename in batch_x]), np.array(batch_y)
+
+sequence = CIFAR10Sequence(filenames, labels, batch_size)
+model.fit(sequence, epochs=10)
+```
+
+
+
+
+
 
 
 
