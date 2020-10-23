@@ -115,6 +115,100 @@ def get_compiled_model():
 ```
 get_uncompiled_model()은 x의 모델을 구축하고 이를 반환한다 get_compiled_model()은 위 모델을 받아와 compile한것을 반환해준다.
 
+#### Automatically setting apart a validation holdout set
+
+검증 데이터르 만들떄 이전에는 Numpy Array를 모델에 적용했던 것과 다르게 훈련데이터를 학습시킬때 즉 fit()함수에서 바로 검증데이터로
+적용할 수 있다 뿐만아니라 그 비율과 검증데이터의 정확도 또한 바로 나온다 아래 예시를 보자
+```
+model = get_compiled_model()
+model.fit(x_train, y_train, batch_size=64, validation_split=0.2, epochs=1)
+
+결과
+625/625 [==============================] - 1s 2ms/step - loss: 0.3753 - sparse_categorical_accuracy: 0.8927 - val_loss: 0.2252 - val_sparse_categorical_accuracy: 0.9344
+
+<tensorflow.python.keras.callbacks.History at 0x7f755826f160>
+```
+
+### Training & evaluation from tf.data Datasets
+
+앞서 보았던 것은 NumPy Array일 경우이다 그렇다면 tf.data.Dataset 객체의 데이터를 가지고 있다면 어떻게 모델을 학습시킬까?
+아래 예시를 보자
+```
+model = get_compiled_model()
+
+# First, let's create a training Dataset instance.
+# For the sake of our example, we'll use the same MNIST data as before.
+train_dataset = tf.data.Dataset.from_tensor_slices((x_train, y_train))
+# Shuffle and slice the dataset.
+train_dataset = train_dataset.shuffle(buffer_size=1024).batch(64)
+
+# Now we get a test dataset.
+test_dataset = tf.data.Dataset.from_tensor_slices((x_test, y_test))
+test_dataset = test_dataset.batch(64)
+
+# Since the dataset already takes care of batching,
+# we don't pass a `batch_size` argument.
+model.fit(train_dataset, epochs=3)
+
+# You can also evaluate or predict on a dataset.
+print("Evaluate")
+result = model.evaluate(test_dataset)
+dict(zip(model.metrics_names, result))
+```
+
+tf.data.Dataset.from_tensor_slices((x_data , y_data))를 통해 tf.data형태인 train_data와 test_data를 만들었다. 이를 fit()함수로 
+학습시고 evaluate() , pedict() 함수를 이용해 평가하고 예측하였는데 이는 전과 같은 형태이다.
+
+epochs마다 모든 batch_size가 학습이 끝나면 data는 초기화되어 다시 사용가능한데 이때 steps_per_epochs 함수를 이용하면 하나의 Epochs마다 학습하는 batch_size의 양을 결정할 수 있다 예를들어 
+```
+model = get_compiled_model()
+
+# Prepare the training dataset
+train_dataset = tf.data.Dataset.from_tensor_slices((x_train, y_train))
+train_dataset = train_dataset.shuffle(buffer_size=1024).batch(64)
+
+# Only use the 100 batches per epoch (that's 64 * 100 samples)
+model.fit(train_dataset, epochs=3, steps_per_epoch=100)
+```
+위 예시는 각 epochs마다 100개의 batch_size를 학습하란 의미로 64 * 100개의 샘플이미지를 학습한다 이렇게 학습되면 epcosh는 리셋되지 않고 다음 epochs에 이후에 학습되어야 하는 batch_size가 학습된다.
+
+#### Using a validation datset 
+
+검증데이터를 사용할 경우 fit() 함수에 tf.data의 형태로 넣어준다. (validation_data = val_dataset부분)
+```
+model = get_compiled_model()
+
+# Prepare the training dataset
+train_dataset = tf.data.Dataset.from_tensor_slices((x_train, y_train))
+train_dataset = train_dataset.shuffle(buffer_size=1024).batch(64)
+
+# Prepare the validation dataset
+val_dataset = tf.data.Dataset.from_tensor_slices((x_val, y_val))
+val_dataset = val_dataset.batch(64)
+
+model.fit(train_dataset, epochs=1, validation_data=val_dataset)
+```
+각 epochs가 끝날때마다 모델은 검증데이터의 loss값과 validation metircs를 게산한다. 만약 위의 steps_per_epoch처럼 각 epochs마다 검증
+데이터의 크기를 지정하고 싶다면 validation_steps() 인수를 이용해 명시한다 
+```
+model.fit(
+    train_dataset,
+    epochs=1,
+    # Only run validation using the first 10 batches of the dataset
+    # using the `validation_steps` argument
+    validation_data=val_dataset,
+    validation_steps=10,
+)
+```
+이때 validation_data는 각 epochs마다 reset되며 따라서 각 epochs마다 같은 data를 이용하여 검증된다 
+
+#### Other input formats supported
+
+
+
+
+
+
 
 
 
