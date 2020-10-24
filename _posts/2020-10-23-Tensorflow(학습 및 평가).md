@@ -83,9 +83,8 @@ print("predictions shape:", predictions.shape)
 ```
 #### The compile() method
 
-fit()을 사용하기 위해 손실(loss)함수 , optimizer , optionly, some metrucs to moniter등을 인수로 넣어준다 이때 metrics함수는 list의 형태로 
-넘겨줘야한다  ex) `metrics=[keras.metrics.SparseCategoricalAccuracy()]` 또한 만약 모델이 다중출력의 형태를 지닌다면 각각의 출력에 대한
-loss함 함수와 metrucs를 인수로 널어줘야한다 위의 방식이 아닌 
+fit()을 사용하기 위해 손실(loss)함수 , optimizer , optionly, some metrucs to moniter등을 인수로 넣어준다 이때 metrics함수는 list의 형태로 넘겨줘야한다  ex) `metrics=[keras.metrics.SparseCategoricalAccuracy()]` 또한 만약 모델이 다중출력의 형태를 지닌다면 각각의 출력에 대한
+loss함 함수와 metrics를 인수로 널어줘야한다 위의 방식이 아닌 
 ```
 model.compile(
     optimizer="rmsprop",
@@ -269,7 +268,9 @@ freqeuncy에 의해 가중치를 세팅하는 두가지 방법이 있다 class w
 #### class weight 
 
 Model.fit()에 있는 class_weight인수자리에 class_weight dictionary를 넣어준다.
-이는 특정 class에 중요도를 분석하여 train model에 있어 차이를 둘 수 있다.예를 들어 0번 class가 1번 class에 비해 절반정도의 중요도를 가질경우 `Model.fit(..., class_weight={0: 1., 1: 0.5})`라고 사용가능하다. 아래에 예시를 보자 
+이는 특정 class에 중요도를 분석하여 train model에 있어 차이를 둘 수 있다.예를 들어 0번 class가 1번 class에 비해 절반정도의 중요도를 가질경우 
+`Model.fit(..., class_weight={0: 1., 1: 0.5})`라고 사용가능하다. 아래에 예시를 보자 
+
 ```
 import numpy as np
 
@@ -295,6 +296,272 @@ model.fit(x_train, y_train, class_weight=class_weight, batch_size=64, epochs=1)
 dictionary 형태의 class_weight를 만들고 난 후 (5번 class에는 다른 항목에 비해 2배더 중요하다고 두었다) fit()에서 class_weight인수에 전달해 주었다.
 
 #### sample weight
+
+가중치의 세밀한 제어를 위해 또는 분류기를 작성하지 않는 경우 "sample weight"를 사용할 수 있다. 이떄 학습데이터가 Numpy data일 경우 smaple_weight 요소를 Model.fit()함수에 전달한다.:"sample weights"는 숫자로 이루어진 배열이다 예시를 보도록 하자
+```
+sample_weight = np.ones(shape=(len(y_train),))
+sample_weight[y_train == 5] = 2.0
+
+print("Fit with sample weight")
+model = get_compiled_model()
+model.fit(x_train, y_train, sample_weight=sample_weight, batch_size=64, epochs=1)
+```
+데이터가 tf.data일 경우에는 아래의 예시를 따른다
+```
+sample_weight = np.ones(shape=(len(y_train),))
+sample_weight[y_train == 5] = 2.0
+
+# Create a Dataset that includes sample weights
+# (3rd element in the return tuple).
+train_dataset = tf.data.Dataset.from_tensor_slices((x_train, y_train, sample_weight))
+
+# Shuffle and slice the dataset.
+train_dataset = train_dataset.shuffle(buffer_size=1024).batch(64)
+
+model = get_compiled_model()
+model.fit(train_dataset, epochs=1)
+```
+from_tensorf_slices에서 sample_weight를 지정해주면 된다.
+
+### passing data to multi-input , multi-output models 
+
+앞서 봤던 것들은 하나의 input과 하나의 output을 가진다 그렇다면 다중 입력과 출력에 대해서는 어떻게 해야할까? 아래의 예시를 보자
+```
+image_input = keras.Input(shape=(32, 32, 3), name="img_input")
+timeseries_input = keras.Input(shape=(None, 10), name="ts_input")
+
+x1 = layers.Conv2D(3, 3)(image_input)
+x1 = layers.GlobalMaxPooling2D()(x1)
+
+x2 = layers.Conv1D(3, 3)(timeseries_input)
+x2 = layers.GlobalMaxPooling1D()(x2)
+
+x = layers.concatenate([x1, x2])
+
+score_output = layers.Dense(1, name="score_output")(x)
+class_output = layers.Dense(5, name="class_output")(x)
+
+model = keras.Model(
+    inputs=[image_input, timeseries_input], outputs=[score_output, class_output]
+)
+```
+예시는 두개의 input을 가지고있다. 하나는 image의 크기, 다른 하나는 timeseries input_shape = (None , 10) 이다. 각기 다른 input값은
+각각의 모델을 가지고 layers.concatenate([x1 , x2])을 통해 합쳐졌다. 이후 score_output 과 class_output 두가지 출력 layers를 만들었다.
+
+```
+keras.utils.plot_model(model , "multi_input_and_output_model.png", show_shapes=True)
+```
+![이미지](https://www.tensorflow.org/guide/keras/train_and_evaluate_files/output_ac8c1baca9e3_0.png)
+
+모델을 학습하기 위해 서로다른 손실함수를 선언해주었다.(optimizer는 같음) 만약 하나의 loss함수만을 전달해 주었다면 두개의 모델은 같은 손실함수를 사용한다.
+```
+model.compile(
+    optimizer=keras.optimizers.RMSprop(1e-3),
+    loss=[keras.losses.MeanSquaredError(), keras.losses.CategoricalCrossentropy()],
+)
+```
+complie에서 metrics또한 따로 지정가능하다 이때 2개 이상의 output을 가진다면 아래와 같이 dictionary형태로 선언해주는 것이 좋다
+
+```
+model.compile(
+    optimizer=keras.optimizers.RMSprop(1e-3),
+    loss={
+        "score_output": keras.losses.MeanSquaredError(),
+        "class_output": keras.losses.CategoricalCrossentropy(),
+    },
+    metrics={
+        "score_output": [
+            keras.metrics.MeanAbsolutePercentageError(),
+            keras.metrics.MeanAbsoluteError(),
+        ],
+        "class_output": [keras.metrics.CategoricalAccuracy()],
+    },
+)
+```
+마찬가지로 loss_weights 요소를 통해 각각의 특정한 손실함수에 각기다른 가중치를 전달할 수 있다. 
+```
+model.compile(
+    optimizer=keras.optimizers.RMSprop(1e-3),
+    loss={
+        "score_output": keras.losses.MeanSquaredError(),
+        "class_output": keras.losses.CategoricalCrossentropy(),
+    },
+    metrics={
+        "score_output": [
+            keras.metrics.MeanAbsolutePercentageError(),
+            keras.metrics.MeanAbsoluteError(),
+        ],
+        "class_output": [keras.metrics.CategoricalAccuracy()],
+    },
+    loss_weights={"score_output": 2.0, "class_output": 1.0},
+)
+```
+만일 모델에 있어 학습을 시키지 않고싶을때 이런식으로 구현가능하다.
+```
+# List loss version
+model.compile(
+    optimizer=keras.optimizers.RMSprop(1e-3),
+    loss=[None, keras.losses.CategoricalCrossentropy()],
+)
+
+# Or dict loss version
+model.compile(
+    optimizer=keras.optimizers.RMSprop(1e-3),
+    loss={"class_output": keras.losses.CategoricalCrossentropy()},
+)
+```
+
+```
+model.compile(
+    optimizer=keras.optimizers.RMSprop(1e-3),
+    loss=[keras.losses.MeanSquaredError(), keras.losses.CategoricalCrossentropy()],
+)
+
+# Generate dummy NumPy data
+img_data = np.random.random_sample(size=(100, 32, 32, 3))
+ts_data = np.random.random_sample(size=(100, 20, 10))
+score_targets = np.random.random_sample(size=(100, 1))
+class_targets = np.random.random_sample(size=(100, 5))
+
+# Fit on lists
+model.fit([img_data, ts_data], [score_targets, class_targets], batch_size=32, epochs=1)
+
+# Alternatively, fit on dicts
+model.fit(
+    {"img_input": img_data, "ts_input": ts_data},
+    {"score_output": score_targets, "class_output": class_targets},
+    batch_size=32,
+    epochs=1,
+)
+```
+fit()에서 더미 데이터를 만들어 dictionary형태로 넣어준다. 아래는 dataset의 경우이다
+```
+train_dataset = tf.data.Dataset.from_tensor_slices(
+    (
+        {"img_input": img_data, "ts_input": ts_data},
+        {"score_output": score_targets, "class_output": class_targets},
+    )
+)
+train_dataset = train_dataset.shuffle(buffer_size=1024).batch(64)
+
+model.fit(train_dataset, epochs=1)
+```
+
+### Using callback
+
+keras에서 callback 객체는 가중치가 학습하는 동안 다른요소들을 호출할 수 있게 한다 예를들어 epoch가 시작될떄, batch반복이 종료될떄, epoch의 반복이 마지막일떄 등이 있다 이는 아래와 같이 사용된다.
+
+1. 학습하는동안 각기 다른 지점에서 검증을 할떄 
+2. 정기적으로 또는 특정 정확도 임계 값을 초과할때 모델 체크포인트
+3. 훈련이 정체되는 것처럼 보일떄 모델의 학습률 변경
+4. 훈련이 정체되는 것처럼 보일때 최상위 계층의 미세조정 수행
+5. 교육이 종료되거나 특정 성능 임계값이 초과된 경우 이메일 또는 인스턴트 메세지 알림 보내기
+
+등이 있다 callback은 fit()함수에 인수로 전달가능하다. 아래 예시를 보자
+```
+model = get_compiled_model()
+
+callbacks = [
+    keras.callbacks.EarlyStopping(
+        # Stop training when `val_loss` is no longer improving
+        monitor="val_loss",
+        # "no longer improving" being defined as "no better than 1e-2 less"
+        min_delta=1e-2,
+        # "no longer improving" being further defined as "for at least 2 epochs"
+        patience=2,
+        verbose=1,
+    )
+]
+model.fit(
+    x_train,
+    y_train,
+    epochs=20,
+    batch_size=64,
+    callbacks=callbacks,
+    validation_split=0.2,
+)
+```
+위 예시는 만일 검증시 그 성능이 개선되지 않을경우 학습을 중단하는 예시이다 위의 moniter = "val_loss" val_loss가 개선되지 않는다면 학습을 중
+단하겠다는 의미이다 min_delta  = 1e-4는 1e-4만큼 개선되야지만 학습을 계속해나간다는 의미이다. 이러한 요소들은 학습을 조기종료하는 `EarlyStopping` 모듈에서의 인수들이다
+
+이러한 모듈들은 
+
+* ModelCheckpoint : 주기적으로 모델을 저장한다.
+
+* EarlyStopping : 훈련이 더이상 검증 지표를 개선하지 않을 때 훈련을 중지한다 
+
+* TensorBoard : 학습과정을 시각화할 수 있다.
+
+* CSVLogger : 손실 및 metrics data를 CSV파일로 스트리밍한다.
+
+### CheckPoint Model
+
+비교적 큰 데이터 세트에서 모델을 학습하는 경우 모델의 체크 포인트를 빈번한 간격으로 저장하는 것이 중요하다 이를 구현하는 가장 쉬운 방법은
+`ModelCheckpoint` callback을 사용하는 것이다. 매 epochs마다 모델이 저장되는 아래 예시를 보자
+
+```
+model = get_compiled_model()
+
+callbacks = [
+    keras.callbacks.ModelCheckpoint(
+        # Path where to save the model
+        # The two parameters below mean that we will overwrite
+        # the current checkpoint if and only if
+        # the `val_loss` score has improved.
+        # The saved model name will include the current epoch.
+        filepath="mymodel_{epoch}",
+        save_best_only=True,  # Only save a model if `val_loss` has improved.
+        monitor="val_loss",
+        verbose=1,
+    )
+]
+model.fit(
+    x_train, y_train, epochs=2, batch_size=64, callbacks=callbacks, validation_split=0.2
+)
+```
+ModelCheckpoint callback은 훈련이 무작위로 중단되는 경우 모델의 마지막 저장된 상태에서 훈련을 다시 시작 할 수 있는 기능이다 
+```
+import os
+
+# Prepare a directory to store all the checkpoints.
+checkpoint_dir = "./ckpt"
+if not os.path.exists(checkpoint_dir):
+    os.makedirs(checkpoint_dir)
+
+
+def make_or_restore_model():
+    # Either restore the latest model, or create a fresh one
+    # if there is no checkpoint available.
+    checkpoints = [checkpoint_dir + "/" + name for name in os.listdir(checkpoint_dir)]
+    if checkpoints:
+        latest_checkpoint = max(checkpoints, key=os.path.getctime)
+        print("Restoring from", latest_checkpoint)
+        return keras.models.load_model(latest_checkpoint)
+    print("Creating a new model")
+    return get_compiled_model()
+
+
+model = make_or_restore_model()
+callbacks = [
+    # This callback saves a SavedModel every 100 batches.
+    # We include the training loss in the saved model name.
+    keras.callbacks.ModelCheckpoint(
+        filepath=checkpoint_dir + "/ckpt-loss={loss:.2f}", save_freq=100
+    )
+]
+model.fit(x_train, y_train, epochs=1, callbacks=callbacks)
+```
+
+
+
+
+
+
+
+
+
+
+
 
 
 
