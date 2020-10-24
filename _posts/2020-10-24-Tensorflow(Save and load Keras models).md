@@ -25,3 +25,36 @@ keras 모델은 다양한 요소들을 포함한다.
 ---
 ### The short answer to saving & loading
 
+tensorflow 문서에서는 매우 간단하다고 소개하고 있으니 한번 봐보자 
+
+savning a keras model의 예시이다
+```
+model = ...  # Get model (Sequential, Functional Model, or Model subclass)
+model.save('path/to/location')
+```
+
+Loading the model 의 예시이다
+```
+from tensorflow import keras
+model = keras.models.load_model('path/to/location')
+```
+### whole-model saving & loading 
+
+전체 모델을 단일항목으로 저장할 수 있는데 이는 
+
+1. 모델의 구조와 설정
+
+2. 모델의 가중치값 
+
+3. 모델의 compliation 정보 (if compile() was called)
+
+4. optimizer 와 그것의 상태 
+
+### API
+
+* model.save() or tf.keras.models.save_model()
+
+* tf.keras.models.load_model()
+
+
+
