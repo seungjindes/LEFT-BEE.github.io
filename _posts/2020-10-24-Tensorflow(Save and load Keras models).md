@@ -144,7 +144,7 @@ SavedModel format에 비하여 두가지가 H5파일에는 포함되어있지 �
 
 모델의 구조는 모델에 포함된 레이어와 이러한 레이어의 연결방법을 지정한다 모델 구성이 있는 경우 가중치에 대해 새로 초기화된 상태로 컴파일 정보 없이 모델을 작성할 수 있다.
 
-#### Sequential 모델 또는 Functional API 모델의 구성 ★★★★★★★★★★★★★(여기 모르겠음 뭐라는건지)
+#### Sequential 모델 또는 Functional API 모델의 구성 
 
 이러한 유형의 model은 명시적 graph이다 구성은 항상 구조화된 형식으로 제공된다.
 
@@ -164,7 +164,7 @@ layer = keras.layers.Dense(3, activation="relu")
 layer_config = layer.get_config()
 new_layer = keras.layers.Dense.from_config(layer_config)
 ```
-...모르겠다 생략하자
+...대충 모델 아키텍쳐만을 저장할 수 있다는 의미라고 생각하자 
 
 ### 모델의 가중치 값만 저장 및 로딩
 
@@ -239,8 +239,108 @@ subclassed_model.set_weights(functional_model.get_weights())
 assert len(functional_model.weights) == len(subclassed_model.weights)
 for a, b in zip(functional_model.weights, subclassed_model.weights):
     np.testing.assert_allclose(a.numpy(), b.numpy())
-    ````
-    
+````
+functional_model에서의 가중치를 SubclassModel의 가중치에 세팅하는 예제이다 특히 `subclassed_model.set_weights(functional_model.get_weights())` 이부분에 집중하도록 하자 
+
+
+#### 디스크에 가중치를 저장하고 다시 로딩하기 위한 API
+
+다음 형식으로 model.save_weights를 호출하여 디스크에 가중치를 저장할 수 있다 
+
+* TensorFlow Checkpoint
+
+* HDF5
+
+model.save_weights의 기본 형식은 TensorFlow 체크포인트이다. 저장 형식을 지정하는 두 가지 방법이 있는데 
+
+1. save_format 인수: save_format="tf" 또는 save_format="h5"에 값을 설정한다 
+
+2. path 인수: 경로가 .h5 또는 .hdf5로 끝나면 HDF5 형식이 사용된다.
+
+
+### TF Checkpoint 형식
+
+예제 부터 보자
+```
+# Runnable example
+sequential_model = keras.Sequential(
+    [
+        keras.Input(shape=(784,), name="digits"),
+        keras.layers.Dense(64, activation="relu", name="dense_1"),
+        keras.layers.Dense(64, activation="relu", name="dense_2"),
+        keras.layers.Dense(10, name="predictions"),
+    ]
+)
+sequential_model.save_weights("ckpt")
+load_status = sequential_model.load_weights("ckpt")
+
+# `assert_consumed` can be used as validation that all variable values have been
+# restored from the checkpoint. See `tf.train.Checkpoint.restore` for other
+# methods in the Status object.
+load_status.assert_consumed()
+```
+단순하게 모델을 만든후 save_weight를 호출하여 저장하고 load_weight를 사용해 로드하였다 이후 laod_status.assert_consumed를 통해 체크포인트에 제대로 저장되었는지 확인하였다.
+
+### 전이학습 예제
+
+```
+inputs = keras.Input(shape=(784,), name="digits")
+x = keras.layers.Dense(64, activation="relu", name="dense_1")(inputs)
+x = keras.layers.Dense(64, activation="relu", name="dense_2")(x)
+outputs = keras.layers.Dense(10, name="predictions")(x)
+functional_model = keras.Model(inputs=inputs, outputs=outputs, name="3_layer_mlp")
+# 모델 1
+
+# Extract a portion of the functional model defined in the Setup section.
+# The following lines produce a new model that excludes the final output
+# layer of the functional model.
+pretrained = keras.Model(
+    functional_model.inputs, functional_model.layers[-1].input, name="pretrained_model"
+)
+# Randomly assign "trained" weights.
+for w in pretrained.weights:
+    w.assign(tf.random.normal(w.shape))
+pretrained.save_weights("pretrained_ckpt")
+pretrained.summary()
+
+# Assume this is a separate program where only 'pretrained_ckpt' exists.
+# Create a new functional model with a different output dimension.
+inputs = keras.Input(shape=(784,), name="digits")
+x = keras.layers.Dense(64, activation="relu", name="dense_1")(inputs)
+x = keras.layers.Dense(64, activation="relu", name="dense_2")(x)
+outputs = keras.layers.Dense(5, name="predictions")(x)
+model = keras.Model(inputs=inputs, outputs=outputs, name="new_model")
+
+# Load the weights from pretrained_ckpt into model.
+model.load_weights("pretrained_ckpt")
+
+# Check that all of the pretrained weights have been loaded.
+for a, b in zip(pretrained.weights, model.weights):
+    np.testing.assert_allclose(a.numpy(), b.numpy())
+
+print("\n", "-" * 50)
+model.summary()
+
+# Example 2: Sequential model
+# Recreate the pretrained model, and load the saved weights.
+inputs = keras.Input(shape=(784,), name="digits")
+x = keras.layers.Dense(64, activation="relu", name="dense_1")(inputs)
+x = keras.layers.Dense(64, activation="relu", name="dense_2")(x)
+pretrained_model = keras.Model(inputs=inputs, outputs=x, name="pretrained")
+
+# Sequential example:
+model = keras.Sequential([pretrained_model, keras.layers.Dense(5, name="predictions")])
+model.summary()
+
+pretrained_model.load_weights("pretrained_ckpt")
+
+# Warning! Calling `model.load_weights('pretrained_ckpt')` won't throw an error,
+# but will *not* work as expected. If you inspect the weights, you'll see that
+# none of the weights will have loaded. `pretrained_model.load_weights()` is the
+# correct method to call.
+```
+
+
 
 
 
