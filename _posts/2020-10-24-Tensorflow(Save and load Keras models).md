@@ -297,6 +297,7 @@ functional_model = keras.Model(inputs=inputs, outputs=outputs, name="3_layer_mlp
 pretrained = keras.Model(
     functional_model.inputs, functional_model.layers[-1].input, name="pretrained_model"
 )
+# 모델1의 인풋과 output의 단계를 가지고 와서 모델을 생성함
 # Randomly assign "trained" weights.
 for w in pretrained.weights:
     w.assign(tf.random.normal(w.shape))
@@ -339,7 +340,7 @@ pretrained_model.load_weights("pretrained_ckpt")
 # none of the weights will have loaded. `pretrained_model.load_weights()` is the
 # correct method to call.
 ```
-
+전이 학습의 예제가 이해가 안된다 일단 넘어간후 Keras 전이 학습편에서 자세히 공부하도록 하자 
 
 
 
