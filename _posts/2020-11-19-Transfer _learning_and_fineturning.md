@@ -110,6 +110,37 @@ np.testing.assert_allclose(
     initial_layer1_weights_values[1], final_layer1_weights_values[1]
 )
 ```
+### recursive setting of the trainable attribute
+
+만약 sublayer를 가지거나 children layer가 있는 layer를 trainable =false로 설정헀다면 이는 하위의 layer들도 non-trainable해진다
+example
+```
+inner_model = keras.Sequential(
+    [
+        keras.Input(shape=(3,)),
+        keras.layers.Dense(3, activation="relu"),
+        keras.layers.Dense(3, activation="relu"),
+    ]
+)
+
+model = keras.Sequential(
+    [keras.Input(shape=(3,)), inner_model, keras.layers.Dense(3, activation="sigmoid"),]
+)
+
+model.trainable = False  # Freeze the outer model
+
+assert inner_model.trainable == False  # All layers in `model` are now frozen
+assert inner_model.layers[0].trainable == False  # `trainable` is propagated recursively
+```
+
+### Typical transfer-learning workflow 
+
+Keras에서 특정한 전이학습과정이 어떻게 이루어지는지를 알아보자 
+
+1. 기반 모델을 인스턴트화하고 학습된 weight를 로드하여 모델에 넣는다 
+
+
+
 
 
 
