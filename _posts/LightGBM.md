@@ -1,0 +1,112 @@
+---
+title: "lightGMB이란 무엇인가?"
+---
+
+### lightGMB란?
+이번글은 https://nurilee.com/2020/04/03/lightgbm-definition-parameter-tuning/위 블로그에서 그대로 배워서 정리한것에 불과하다.
+
+위 블로그의 필자는 kaggle 데이터 분석 경진대회에서 LightGBM이 20년 3월 기준으로 상대적 새롱누 알고리즘 이며 강력한 알고리즘이라고 소개한다 
+
+LightGBM이란 gradient boosting 프레임 워크로 tree기반 학습 알고리즘이다. 그렇다면 gradient boosting algorithm(gbm) 이란 무엇일까 gbm은 
+회귀 분석 또는 분류 분석을 수행할 수 있는 예측 모델이며 예측 모델의 앙상블 방법론 중 부스팅 계열에 속하는 알고리즘이다. 여기서 앙상블 방법론은 
+단계결합이라고도 불리는데 이는 결과를 만들어 낼때 하나의 모델만을(분류기)만을 사용하는 것이 아닌 개별로 학습한 모델의 조합을 통해  더 좋은 결과를
+내는 것을 의미한다. 앙상블 모델을 사용하게되면 성능을 분산시키기에 과적합 감소 효과 또한 있다. \
+
+이러한 앙상블 기법은 아까 말한 부스팅 방식과 취합방법 이 두가지로 나뉘게 되는데 weak learner들이 미리 정해져 있어 이들을 취합해서 사용하는
+배깅(bagging)과 랜덤 포레스트(random forest) weaklearner들을 하나씩 점진적으로 연결하여 string learner를 만드는 부스팅 방법이 있다.
+부스팅 방법에는 gradient boost 와 Ada boost가 있다. 우리가 사용할 gradient boost는 각 weaker model을 순차적으로 적용해 나가는 과정에서 잘못 분류된 샘플의
+error를 optimizaion하는 방식으로 진행된된다.
+
+이렇게 함으로써 식별하기 쉬운 데이터 특징에 대응하는 학습기 부터 식별하기 어려운 데이터 특징에 대응하는 학습기까지 생성이 된다.
+
+다시 돌아와서 앙상블 기법의 gradient boosting은 기존의 tree가 수평적으로 확장되는 것에 비해 tree가 수직적으로 확장되는 특징이 있다.
+확장하기 위해 max delta loss를 가진 leaf를 선택하는 것이다 수평적 확작인 leaf_wise알고리즘은 더 많은 손실을 줄일 수 있다.
+
+### 인기를 얻게된 이유?   
+
+LightGBM은 말그대로 가벼운 것인데 왜냐하면 속도가 빠르기 때문이다. lightGBM은 큰사이즈의 데이터를 다룰 수 있고 실행 할때 적은 메모리를 차지한다 
+또한 결과의 정확도에 초점을 맞추는 알고리즘인점은 이 모델의 인기를 더욱 가져오게하였다. 이러한 lgmb은 작은 데이터셋에서 사용하는 것은 추천하지 않는다.
+10000이상의 row을 가진 데이터에 사용하는 것이 추천하는 바이다. 
+
+### 구현방법?
+
+lgbm구현은 쉽다 하지만 파라미터 튜닝과정이 복잡한데 lgbm은 100개 이상의 파라미터를 커버하고 있기 때문이다  이러한 다양한 파라미터를 익히기만 한다면
+손쉽게 강력한 모델을 만들 수 있다. 핵심파라미터 몇개를 살펴보자면
+
+1. application - 가장 중요한 파라미터로 모델의 어플리케이션을 정하는데 이것이 회귀분석인지 분류문제인지 정한다 lgbm에서 디폴트는 회귀본석모델이다.
+
+2. boosting - 실행하고자 하는 알고리즘 타입을 정의한다 디폴트값은 gdpt이다. 
+
+3. metric -모델을 구현할 때 손실을 정하기 떄문에 중요한 변수중에 하나이다 regrssion과 classification을 위한 일반적인 손실 함수는 아래와 같다.
+  ● mae: 절대오차
+  ● mse: 평균제곱근오차
+  ● binary_logloss 이진 분류 오차
+  ● multi_logloss : 다중분류 오차
+  
+  ### LGBM 모델 이용
+  
+  필자는 conda환경에서 모델을 구현함
+  
+  ```
+  conda install -c conda-gorge loghtgbm
+  ```
+  데이터 전처리 과정은 생략하도록하고 바로 모델빌드 및 트레이닝과정으로 가도록 한다
+  
+  ```
+  import lightgbm as lgb
+d_train = lgb.Dataset(x_train, label=y_train)
+params = {}
+params['learning_rate'] = 0.003
+params['boosting_type'] = 'gbdt'
+params['objective'] = 'binary'
+params['metric'] = 'binary_logloss'
+params['sub_feature'] = 0.5
+params['num_leaves'] = 10
+params['min_data'] = 50
+params['max_depth'] = 10
+clf = lgb.train(params, d_train, 100)
+```
+
+train data를 LightGBM에 맞는 데이터 세트 format으로 변환해야한다.(필수적 과정) 변환된 데이터 세트 생성 이후에 파라미터와 그 값으로 구성된
+python dictionary를 생성하였다. 모델의 정확도는 설정된 파라미터 값에 전적으로 달려있다.
+
+모델 예측과정을 살펴보자
+```
+#Prediction
+y_pred=clf.predict(x_test)
+#convert into binary values
+for i in range(0,99):
+    if y_pred[i]>=.5:       # setting threshold to .5
+       y_pred[i]=1
+    else:  
+       y_pred[i]=0
+  ```
+  
+  예측이 끝나고 정확도를 조정하기 위해 파라미터 튜닝 과정이 필요하다 
+  
+  #### 아래 소개되는 기법들은 ''모델의 정확도를 향상시키기 위해'' 사용될 수 있다.
+  
+  ● numleaves : tree모델의 복잡성을 컨트롤하는 주요 파라미터이다 이상적으로 num_leaves값은 2^max_depth값보다 적거나 같아야 한다 이보다 많으 ㄹ경우 과적합을 유발한다.
+  ● min_data_in_leaf : 큰값으로 세팅하는 것은 tree가 너무 깊게 확장되는 것을 막을 수 있지만 언더피팅이 발생할 수도 있으므로 수백에서 수천개로 정화는 것이 관행이다.
+  ● max_depth
+  
+  #### 더빠른 속도를 위하여
+  
+  ● baggnig_fraction 과 bagging_freg을 설정하여 bagging을 적용한다.
+  ● save_binary를 값을 통해 다가오는 학습에서 데이터 로딩 속도를 줄일 수 있다.
+  ● parallel learning : 병렬 학습을 적용한다.
+  
+  
+  
+  
+  
+  
+  
+  
+
+  
+  
+  
+
+  
+  
