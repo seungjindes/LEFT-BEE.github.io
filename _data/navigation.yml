@@ -1,6 +1,6 @@
 main:
-    -title: "블로그 방문하기"
+   -title: "블로그 방문하기"
     url: https://left-bee.github.io/
-    -title: "Categories"
+   -title: "Categories"
     url: /categories/
 
