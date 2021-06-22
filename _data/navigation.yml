@@ -1,7 +1,9 @@
 #main links
-main:
-   -title: "블로그 방문하기"
-    url: https://left-bee.github.io/
-   -title: "Categories"
-    url: /categories/
 
+main:
+  - title: "Home"
+    url: https://JinHoooooou.github.io
+  - title: "About"
+    url: /about/
+  - title: "블로그 만들기"
+    url: /MakingBlog/
