@@ -17,11 +17,11 @@ minimal_mistakes_skin    : "default" # "air", "aqua", "contrast", "dark", "dirt"
 
 # Site Settings
 locale                   : "en-US"
-title                    : "Site Title"
+title                    : "공부 블로그"
 title_separator          : "-"
 subtitle                 : # site tagline that appears below site title in masthead
-name                     : "LEFT-BEE"
-description              : "훌룡한 개발자가 되기위한 공부 블로그"
+name                     : "Seungjin Han"
+description              : "개발자가 되기위한 공부 블로그"
 url                      : "https://left-bee.github.io"
 baseurl                  : ""
 repository               : # GitHub username/repo-name e.g. "mmistakes/minimal-mistakes"
@@ -94,10 +94,10 @@ analytics:
 
 # Site Author
 author:
-  name             : "LEFT-BEE"
+  name             : "Han Seungjin"
   avatar           : # path of avatar image, e.g. "/assets/images/bio-photo.jpg"
-  bio              : "단순 __명료__ 공부 블로그"
-  location         : "KOREA army"
+  bio              : "공부 블로그"
+  location         : "Kookmin Univ. mlLab"
   email            :
   links:
     - label: "Email"
