@@ -3,7 +3,7 @@ title : "최대우도측정과 SoftMax 분류기 그리고 CrossEntropy까지"
 categories : "cs231"
 ---
 
-#### 최대 우도 측정
+## 최대 우도 측정
 
 우도란(가능성/가능도) - 나타난 결과에 따라 여러 가능한 가설들을 평가할 수 있는 측도(Measure)
 
@@ -25,6 +25,8 @@ categories : "cs231"
 
 ![image](https://user-images.githubusercontent.com/65720894/123300848-f1c3a780-d555-11eb-92e3-4b837b3393af.png)
 
+위 그림처럼 결과값이 나타날 수 있는 최대한의 확률분포를 확률로 만들어낸다
+
 -최대우도 원리란 나타난 결과는 여러 원인 중 일어날 가능성(조건부 확률)이 가장 큰 원인에서 비롯된다는 원리를 말한다.
 
 -최대 우도 추정법은 우도함수를 최대화 하면서 모수를 추정하는 방법인데 관측된 표본에 기초하여 관측 불가능한 파라미터(모수)를 추정하는 방법론
@@ -32,6 +34,7 @@ categories : "cs231"
 
 -최대우도 측정법은 모집단이 어떤 종류의 확률 분포를 하는지 정도는 알고 있으나 구체적으로 모집단을 나타내는 수치를 모르는 경우에 주로 사용한다
 
+![image](https://user-images.githubusercontent.com/65720894/123356169-22313300-d5a2-11eb-954c-02aa521762ea.png)
 
 #### 최대우도 추정법 쉽게 이해하기
 
@@ -52,3 +55,32 @@ categories : "cs231"
  과정을 시사한다, 아울러 최대우도 추정은 특정한 어떤 분포가 아니라 그런 방식을 사용하는 분석방법을 통칭하는 일종의 전략이라 생각하도록 하자
  
  --------------------------------------
+ 
+ 
+ 
+ ## Classfication문제에서 CrossEntropy를 사용하는 원리와 방법론 
+ 
+ ![image](https://user-images.githubusercontent.com/65720894/123356760-43deea00-d5a3-11eb-9efd-367026ef1722.png)
+ 
+ 위 수식은 cross entropy의 일반식 아래식은 binary cross entropy의 식이다
+ 
+ -------
+ 
+ ![image](https://user-images.githubusercontent.com/65720894/123357179-10e92600-d5a4-11eb-981a-e48e03d3479a.png)
+ 
+ - Multi-Class Classfication
+
+각 샘플은 클래스 C중 하나로 분류 될 수 있다. 해는 0번 [1,0,0] 달은 1번, [0 1 0],구름은 2번, [0 0 1]으로 분류될 수 있다는 것이다.
+
+CNN은 s(scroe)벡터를 출력하고 one hot 벡터인 타겟벡터와 t와 매칭이 되어 loss값을 계산할 것이다 즉, Multi-Class Classification은 여러 샘플(이미지)에서 C개의 클래스 중 하나의 클래스로 분류하는 문제로 생각할 수 있다.
+
+
+### 활성화 함수(Activation Function)
+
+Sigmoid 와 softmax 함수가 있고 이 중 softmax함수는 클래스의 스코어를 나타내는 벡터 각각의 요소는 (0,1)이 되며, 모든 합이 1이 되도록 만들어 준다 s_j는 각 스코어이고 모든 i에대해 소프트 맥스 값을 더하면 1이 나온다.
+
+![images2](https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2Fbecyu2%2FbtqxaE6zhbc%2FWbKnWLKN58shWQrkbyscJk%2Fimg.png)
+
+
+## Cross Entropy의 대한 
+
