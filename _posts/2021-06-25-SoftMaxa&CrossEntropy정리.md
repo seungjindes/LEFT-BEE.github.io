@@ -1,6 +1,6 @@
 ---
 title : "최대우도측정과 SoftMax 분류기 그리고 CrossEntropy까지"
-categories : "cs231"
+categories : "내용정리"
 ---
 
 ## 최대 우도 측정
