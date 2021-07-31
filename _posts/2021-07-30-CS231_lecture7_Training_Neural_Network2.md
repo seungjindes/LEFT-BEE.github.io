@@ -113,9 +113,11 @@ RMSProp은 AdaGrad의 gradient 제곱항을 그대로 사용한다.
 
 식을 보면 first_moment와 second_moment가 0이다. 근데 second_moment를 1회 update하고 났을 때 beta2는 decay_rate이니까 0.9 또는 0.99로 1에 가까운 수이다. 그렇기 때문에 1회 update 이후에 second moment는 여전히 0에 가깝다. 이후 update step에서 second_moment로 나누게 되는데 나눠주는 값이 작다보니까 분자가 커져서 값이 튈 수도 있다고 한다. 값이 크면 step이 커져서 이상한 곳으로 튀어버릴 수도 있다.
 
+![image](https://user-images.githubusercontent.com/65720894/127741697-3999bd87-406a-4fc9-b65b-d34b8d7505a3.png)
 
- 
-
+그래서 이를 해결하기 위해 보정항을 추가한다.
+(1e-7는 나누는 값이 0이 되는 것을 방지한다.) 
+first / second moment를 update하고 현재 step에 맞는 적절한 bias를 넣어줘서 값이 튀지 않게 방지하는 것이다.
 
 
 
