@@ -71,6 +71,55 @@ step이 이루어져서 기울기가 0인 지점에서도 update가 되는 알�
 오른쪽 장면에서 빨간 스타트점에서 velocity방향으로 출발한 뒤 거기서 gradident를 게산한다. 
 그리고 다시 원점에서 actual step으로 최적화를 진행한다. 계산 순서의 차이가 있는데, Convex optimization에서는 잘 작동하지만, Neural Network와 같은 non-convex의 문제에서는 보장된 방식은 아니다.
 
+![image](https://user-images.githubusercontent.com/65720894/127741196-68ef0d1c-3dc1-4e31-b5f6-8f3c58a5cd08.png)
+
+위 수식을 보면 파란색 네모칸의 식이 달라졌는데 미리 속도 즉 velocity 방량을 에측해서 gradient를 구해준다는 의미이다 
+
+### AdaGrad
+
+![image](https://user-images.githubusercontent.com/65720894/127741226-8f202b8d-3cde-4538-8dfc-cd547c282fd3.png)
+
+![image](https://user-images.githubusercontent.com/65720894/127741231-368c90d2-1884-48b7-b592-018e38deb022.png)
+
+위 방법은 각각의 매개변수에 맞춤으로 갱신을 해주는 알고리즘이다 훈련도중 계산되는 gradient를 활용하는 방식으로 velocity 대신에 
+grad squared term을 사용한다 학습도중에 계산되는 gradient에 제곱을 해서 계속 더해준다 
+
+![image](https://user-images.githubusercontent.com/65720894/127741262-806e990b-ca06-4b15-a9f1-b19effea3637.png)
+
+
+그러므로 분모의 값이 점점 커지므로 step이 진행될 수록 값이 작아진다. 다시 말해 처음에 올바른 지점으로 접근 할때 속도가 빨랐다가 
+점차 속도가 느려진다는 것이다  convex할때는 minimum에 서서히 속도를 줄여서 수렴하면 좋다 하지만 non convex할때는 
+saddle point에 걸려 멈출 수도 있기에 문제가 된다 이러한 문제점의 해결책으로 RMSProp가 나온다.
+
+### RMSProp
+
+![image](https://user-images.githubusercontent.com/65720894/127741300-c1e935f9-9c66-459e-bb46-8e939caea6ba.png)
+
+RMSProp은 AdaGrad의 gradient 제곱항을 그대로 사용한다.
+하지만 이 값들을 누적만 시키는게 아니라 파란색 상자와 같이 decay_rate를 곱해준다
+보통 decay_rate는 보통 0.9 또는 0.99를 사용한다.
+그리고 현재 gradient 제곱은 (1-decay_rate)를 곱해주고 더해준다.
+이는 adagrad와 매우 비슷하기에 step의 속도를 가속/감속하는 것이 가능하다. 이를 통해 속도가 줄어드는 문제를 해결하였다.
+
+### Adam
+
+위에서 본 모멘텀과 adagrad를 잘 합쳐서 활용한 알고리즘이 바로 Adam이다 
+![image](https://user-images.githubusercontent.com/65720894/127741655-b09ebdfc-5c47-4864-934e-780cd532fb44.png)
+아담은 first moment와 second moment를 이용해서 이전의 정보를 유지시킨다.
+빨간색 상자(first)는 gradient의 가중합이다.
+파란색 상자(second)는 AdaGrad나 RMSProp 처럼 gradients의 제곱을 이용하는 방법이다.
+마치 모멘텀과 RMSProp을 합친 것과 같이 보인다.
+근데 초기 step에서 문제가 발생한다고 한다.
+
+식을 보면 first_moment와 second_moment가 0이다. 근데 second_moment를 1회 update하고 났을 때 beta2는 decay_rate이니까 0.9 또는 0.99로 1에 가까운 수이다. 그렇기 때문에 1회 update 이후에 second moment는 여전히 0에 가깝다. 이후 update step에서 second_moment로 나누게 되는데 나눠주는 값이 작다보니까 분자가 커져서 값이 튈 수도 있다고 한다. 값이 크면 step이 커져서 이상한 곳으로 튀어버릴 수도 있다.
+
+
+ 
+
+
+
+
+
 
 
 
