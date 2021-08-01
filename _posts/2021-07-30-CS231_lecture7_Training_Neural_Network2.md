@@ -119,6 +119,119 @@ RMSProp은 AdaGrad의 gradient 제곱항을 그대로 사용한다.
 (1e-7는 나누는 값이 0이 되는 것을 방지한다.) 
 first / second moment를 update하고 현재 step에 맞는 적절한 bias를 넣어줘서 값이 튀지 않게 방지하는 것이다.
 
+----------
+
+## find learning rate
+
+![image](https://user-images.githubusercontent.com/65720894/127761640-bda34436-bbb7-4c75-bc46-88e657c78bff.png)
+위에서 본 방법 모두 learning rate를 가지고 있는데 이를 구하기 위해서는 다양한 방법이이 있다 물론 쉽다고 하지는 않는다
+decay learning rate같은 경우 처음에 leaning rate를 높게 설정하고 학습이 진행될 수록 점점 낮추는 것이다.
+
+![image](https://user-images.githubusercontent.com/65720894/127761669-b7a7f734-d423-4478-b1e5-270b05080556.png)
+
+위 내용은 ResNet논문에서 나온 내용이다 step decay leearning rate전략을 이용해서 loss를 나타낸 것이다 평평해지다가 내려가는 구간은 learning rate를 낮추는 구간이다
+
+--------------------------
+## Beyond Training Error
+
+![image](https://user-images.githubusercontent.com/65720894/127761703-b64ab435-7220-46a1-8ba9-2c9013e1360b.png)
+
+우리는 loss를 줄이면서 train과 val의 격차를 줄여야만한다 이 간격이 넓어질수록 오버피팅된다는 것인데 이를 위해서 몇가지 방법을 소개한다.
+
+### Model Ensembles
+
+![image](https://user-images.githubusercontent.com/65720894/127761722-f6fd6fe1-e8d5-4a86-b395-a8e89ffc2dd4.png)
+
+다른 방법으로 모델을 독립적으로 학습시키는게 아니라 학습 도중 중간 모델들을 저장(snapshot)하고 앙상블로 사용할 수 있다고 한다. 그리고 test때에는 여러 snapshots에서 나온 예측값들을 평균을 내서 사용한다.
+
+ 
+
+여기서 스냅샷은 구간을 정해놓은 지점이다. 훈련을 하는데 10개의 체크포인트를 두어서 10번째마다 새로 하겠다라는 식의 구간이라고 생각하면 된다. 이게 앙상블을 사용하면 모델을 여러 개 만들기 때문에 그만큼 시간 소모가 든다. 그 방법 대신에 한 모델 안에서 10개의 구간을 두고 마치 앙상블처럼 하겠다는 것이다.
+
+위의 슬라이드에서 빨간색을 보면 train loss가 낮아졌다가 갑자기 올라가고 그러는데
+
+이게 어느 지점에서 learning rate를 엄청 낮췄다가 높였다가를 반복하여
+
+손실함수가 다양한 지역에 수렴할 수 있도록 하는 것이다.
+
+이러한 앙상블 기법으로 모델을 한번만 train 시켜도 좋은 성능을 얻을 수 있다고 한다.
+
+### Regularization 
+
+하지만 앙상블 기법은 모델을 여러개 만들기 떄문에 효율적이지 않다. regularization은 모델이 학습마다 다른 모델을 학습하게 만들어
+training data에 fit하게 만들지 않는다.
+
+![image](https://user-images.githubusercontent.com/65720894/127762010-41a0bb5c-f1d4-4638-8461-422476fec08c.png)
+
+이전에 배운 L1 , L2 규제항은 뉴런네트워크에서 잘 작동하지 않는다고 한다 따라서 나온것이 dropout이다.
+
+![image](https://user-images.githubusercontent.com/65720894/127762026-715fbda6-d4d1-4ab6-85ff-9eff64f545c4.png)
+forward pass 과정에서 일부 뉴런을 0으로 만드는 것이다.
+
+오로지 뉴런의 일부만 사용하고 있다.
+forward pass 반복마다 그 모양은 계속 바뀐다.
+현재의 activatons의 일부를 0으로 만들어 다음 레이어의 일부가 0과 곱해지게 하는 것이다.
+
+
+![image](https://user-images.githubusercontent.com/65720894/127762031-3ba52af8-acb9-4895-8d09-75d95ab966f2.png)
+
+특징은 feature들 간의 상호작용을 방지하는 것이다이후에 모델이 고양이라고 예측할 때 다양한 features를 골고루 이용할 수 있도록 한다.
+
+따라서 dropout이 오버피팅을 어느정도 막아준다.
+
+단일 모델로 앙상블 효과를 가질 수 있다.
+
+dropout은 아주 거대한 앙상블 모델을 동시에 학습시키는 것과 같다.
+
+즉, forward pass마다 dropout을 랜덤하게 하니까
+
+forward pass마다 마치 다른 모델을 만드는 것처럼 효과가 나오게 될 수 있다.
+
+![image](https://user-images.githubusercontent.com/65720894/127762634-dbbafcca-36f0-4fe2-8ee5-df09c21ee0ae.png)
+
+dropout = 0.5로 학습시킨다고 생각해보자. 4가지의 경우의 수가 존재하고, 그 값들을 4개의 마스크에 대해 평균화 시켜준다.
+이 부분에서 train/test 간 기대값이 서로 상이하다.
+test가 train의 절반밖에 되지 않는다. 이를 해결하기 위해 dropout probability를 네트워크의 출력에 곱한다. 그렇다면 이제 기대값이 같아졌다.
+일부노드를 무작위로 0으로 만들어주고 test time에서는 그저 값 하나만 곱해주면 된다.
+
+![image](https://user-images.githubusercontent.com/65720894/127762694-d96c3fbe-0834-409a-bc1e-a9bf38ddcdfe.png)
+
+하지만 우리는 test time이 매우 작았으면 하기에 train time에 작업을 해주어 이를 해결한다 위그림에서 처럼 test에 p를 곱하던 것을 train time에 
+p를 나누어준다.
+
+정리하자면 train time에서는 네트워크에 무작위성을 추가해 training data에 너무 fit하지 않게 한다. test time에는 randiomness를 평균화 시켜서
+genneralization효과를 주는 것이다 BN도 비슷한 역할을 할 수 있다. 그래서 BN을 할때 dropout을 사용하지않는다(사용하지 않는사람도 있고 그렇지
+않다는 사람도 있다)
+
+
+### etc
+
+그외에도 data augumentation을 통해 데이터의 종류를 늘려 학습을 원할하게 하거나 모델의 일부를 변형하여거나 없애 다양한 모델에서의
+학습을 의도한다 이러한 기법들의 공통점으로는 학습과정에서 random을 주어 다양한 조건속에서 학습하게 유도하고 test과정에서 이를
+일반화 시키는 것이다.
+
+-----------------
+
+## Transfer Learing 
+
+원하는 양보다 더 적은 데이터만을 가지고 있을 때 사용하는 방법이다.
+
+![image](https://user-images.githubusercontent.com/65720894/127762811-d6a4f9ea-7028-4c19-acc0-261f2dfa7210.png)
+
+가장 마지막 FC layer는 최종 feature와 class score간의 연결인데 이를 초기화시킨다.
+그리고 차원을(ex. 클래스 수만큼으로) 줄이고, 마지막 레이어만 가지고 우리 데이터를 학습시킨다.
+
+데이터가 조금 많다고 생각되면 전체를 fine tuning 해볼 수도 있다.
+
+![image](https://user-images.githubusercontent.com/65720894/127762820-579712fb-90f5-4c48-9ebd-9ac7304dbb5e.png)
+
+다음과 같이 경우에 따라 적용시키면 매우 효율적인 결과를 얻어낼 수 있을 것이다.
+
+
+
+
+
+
 
 
 
