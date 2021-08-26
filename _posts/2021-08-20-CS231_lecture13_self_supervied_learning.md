@@ -28,6 +28,9 @@ categories : "cs231"
 
 ![image](https://user-images.githubusercontent.com/65720894/130955393-00daafde-65d8-4882-8a70-9890f84a417a.png)
 
+![image](https://user-images.githubusercontent.com/65720894/130955835-6ac14f98-19f2-498d-8300-8c2c738d90c7.png)
+
+
 
 
 
