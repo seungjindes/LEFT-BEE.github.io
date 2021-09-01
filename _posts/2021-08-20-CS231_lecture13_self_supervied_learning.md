@@ -81,22 +81,12 @@ image coloring 은 객체의 앳지나 특징을 파악하는 네트워크와 �
 
 ## contrasive learing 
 
+contrasive loss를 통해 모델구조를 만든 학습 기법이라고 할 수 있다 이는 positive pair와 negative의 encoder를 학습시키는 방법그리고 negarive pair의 이용방법등에 따라 
+다양한 모델이 있는데 예를 들어 SimCLR , MOCO , CPC등이 있다 앞으로 살펴볼 모델은 컴퓨터 비전에서 활용되고 인코더 두개를 학습시키는 end-to-end방식의 모델인 SimCLR 이다
 
+![image](https://user-images.githubusercontent.com/65720894/131614374-48e77b03-3128-4c6f-a5c1-210ff563a373.png)
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+우선 Con
 ![image](https://user-images.githubusercontent.com/65720894/130955199-ce22186d-9499-40b7-8301-87ebc0a76e12.png)
 
 ![image](https://user-images.githubusercontent.com/65720894/130955223-eb69e2db-93fb-4895-86be-0d31e4209a8f.png)
