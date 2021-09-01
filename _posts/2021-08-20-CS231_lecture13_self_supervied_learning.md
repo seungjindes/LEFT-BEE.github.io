@@ -86,32 +86,63 @@ contrasive loss를 통해 모델구조를 만든 학습 기법이라고 할 수 
 
 ![image](https://user-images.githubusercontent.com/65720894/131614374-48e77b03-3128-4c6f-a5c1-210ff563a373.png)
 
-우선 Con
+우선 Contraisive learing 이란 positive pair의 유사도는 최대로 하고 negative pair의 유사도는 최소한으로 하는 것이 목적으로 한다 그렇다면
+positive pair란 무엇일까 이는 비슷한 이미지에서 추출한 특징벡터를 score화 한값들의 쌍이라고 할 수 있다. 따라서 negative pair은 서로다른 이미지에서
+추출한 이미지 특징에서 score화 한 값의 쌍이라고 할 수 있다. 
+
+다시말해 서로 비슷한 이미지들에서 추출한 특징들은 서로 비슷해야 할 것이고 서로 다른 이미지에서 추출한 특징들끼리는 서로 다르게 만드는 것이 목적이다.
+
+따라서 위의 loss식은 분모에 negative pair의 유사도 합산 + positive pair의 유사도 를 가지고 분자로 positive pair의 유사도를 가지게 된다 식에 -log가 적용되었으므로
+분자는 커야하고 분모는 작아저야 loss가 줄어들면서 학습을 하게된다. 이 식은 softmax와 유사한 형태를 띄는데 이는 많은 pair쌍에서 positive pair의 score를 최대로하는 분류문제와
+그 본질이 비슷하다고 생각된다. 
+
+마지막으로 아래의 부등식은 MI라는 상호정보량을 표현하는데 이것에 대한 정의는 두 데이터분포간 엔트로피 유사도라고 할 수 있으므로 우리는 위의 loss식을 통해 나온
+부등식이 log(n)->negative pair의 수 이 많으면 많을 수록 그 성능이 더욱 올라가는 것을 볼 수 있다.
+
+이렇게 contraisve learing을 통해 학습한 모델은 이미지의 특징을 추출하는 인코더를 가지고 있다. 이후는 pretext task와 마찬가지로 인코더를 파인튜닝을 통해
+우리가 원하는 downstream task에 이용하면 된다.
+
 ![image](https://user-images.githubusercontent.com/65720894/130955199-ce22186d-9499-40b7-8301-87ebc0a76e12.png)
+
+위 구조는 contrasitive의 end-to-end방식중 하나인 SimCLR모델이다. 위 구조는 다음과 같은 방식으로 진행되는데
+
+1. mini batch의 N개의 데이터중 하나를 뽑아(x) 서로다른 agumentation을 적용시켜 x_i , x_j쌍을 생성한다. 
+2. 이 두 pair를 깊은 CNN구조에 input하여 이미지의 특징 벡터 h_i ,h_j를 얻게 된다.
+3. 이렇게 얻은 두 특징벡터쌍을 MLP인 g model을 통해 비선형 투영을 시켜 contraisitive loss가 적용될 수 있는 공간으로 mapping 한다.
+4. 이렇게 구한 벡터쌍 z_i , z_j의 유사도를 만약 positive pair에서는 그 유사도를 최대로하고 negative pair에서는 최소한으로 만들어 준다
 
 ![image](https://user-images.githubusercontent.com/65720894/130955223-eb69e2db-93fb-4895-86be-0d31e4209a8f.png)
 
-
-
+위는 positive pair를 만들때 적용되는 agumentation과정들이다 
 
 ![image](https://user-images.githubusercontent.com/65720894/130955244-3c7fe208-8cfd-459b-b361-865a6740fd7a.png)
 
+이때 표를 보게되면 color distrion 과 crop을 agumentation으로 하게되면 성능이 두드러짐을 알 수 있다.
+
 ![image](https://user-images.githubusercontent.com/65720894/130961133-e1b88019-fe2b-4c41-94f9-feffac08cde8.png)
 
+위 그림과 아래그림은 SimCLR의 진행과정을 예시를 들어 보여주는 것이다.
 
 ![image](https://user-images.githubusercontent.com/65720894/130955316-34681cc5-80fa-4d62-96b1-0cdcc8234f93.png)
 
 ![image](https://user-images.githubusercontent.com/65720894/130955583-72619634-15c0-4a92-846a-3906d8013e22.png)
 
+코사인 유사도는 z벡터쌍의 유사도를 구할떄 사용하는 수식이다 두 벡터간의 방향을 수치화 해준다는 의미를 가진다
+
 
 ![image](https://user-images.githubusercontent.com/65720894/130955507-a1a1cc27-9a26-4a9c-9f8f-93bb7db844fc.png)
-
 ![image](https://user-images.githubusercontent.com/65720894/130955532-5f525e59-10b6-42b2-a70b-93fa70e3d445.png)
 
 
 ![image](https://user-images.githubusercontent.com/65720894/130955393-00daafde-65d8-4882-8a70-9890f84a417a.png)
 
+위와 같은 loss식을 변형하여 유사도 행렬을 만들어 한번에 학습을 하게 된다. positive vector를 concat한 것이 아닌 사이사이에
+섞여 들어가게 만들어 색칠된 부분에만 positive pair가 들어가게 되고 나머지 index에는 negative pair가 들어가게되어 이를 활용한다.
+
 ![image](https://user-images.githubusercontent.com/65720894/130955835-6ac14f98-19f2-498d-8300-8c2c738d90c7.png)
+
+물론 supervised learning에 비해서는 좋지못한 성능을 보이지만 상대적으로 레이블이 없는 환경에서 이 정도의 성능을 보이는 것은
+대단한 아이디어인 것 같다.
 
 
 
