@@ -148,15 +148,64 @@ positive pair란 무엇일까 이는 비슷한 이미지에서 추출한 특징�
 
 
 
+#### 2021-09-08일 추가수정
+----------
+
+
+## MOCO에 대해서 
+
+Moco, Momentum contrast for unsupervised visual representation learing이다 대충 해석해보면 시각적표현에 대한 순간 대조 학습법인 것 같은데..... 공부를 통해 이해할 수 있을 것 같다.
+
+Moco이전의 contrasitive learning 은 end-to-end방식 , memory방식이 존재 하였다. 이중에서 end-to-end방식은 이전에 본 
+simclr구조를 말한다.
+
+![image](https://user-images.githubusercontent.com/65720894/132463854-7977fdf3-cc4c-47dd-a087-bd1f4e9668d7.png)
+
+Contrasitive loss를 최대한 활용하려면 많은 수의 negative항이 필요하다 -> 이전에 살펴본 하한항 배치사이즈가 늘면 늘수록 
+모델의 성능은 올라간다. 이때 negative sample의 encoder는 query encoder와 consistent해야한다 왜냐하면 비슷한 데이터에서 
+좋은 특징(유사한특징)을 뽑아내기 위해서는 비슷한 인코더가 필요한 것은 당연하다.
+
+end-to-end 방식은 mini-batch내에 존재하는 ample들을 negative sampel로 활용하는데 많은 negative sample을 사용하려면 computational limit이 발생한다 memory bank 방식은 많은 양의 negative sample을 활용할 수 있지만(와냐하면 negative항에서는 enocoder를 업데이트 하지 않으므로 ) encoder가 update됨에 따라
+encoded된 negative sample은 갱신이 되지 않는다.-> 학습을 하지 않는다 -> 계속 같은 특징만 추출하게 된다.   
+
+이러한 end-to-end와 memory bank 방식의 단점을 개선한 것이 MOCO이다.
 
 
 
+### Method
 
+![image](https://user-images.githubusercontent.com/65720894/132465265-94f7711c-6c78-4fe3-a1b7-5eb3b70bba46.png)
 
+__Moco의 핵심아이디어는 1. negative representation을 저장하는 queue. 2. key encoder의 momentum update이다__
 
+MoCo는 simclr과 마찬가지로 하나의 이미지에 두개의 augumentation을 적용한다, 만들어진 유사한 이미지들은 similar로 정의한다
+queue내에 존재하는 representation은 disimiar로 사용한다. queue내는 과거 batch내 augumentation이 image가 encode된 representation들로 이루어져 있다. 정의된 simliar와 disimliar를 사용하여 contrastive loss를 계산한다 encoder를 갱신하고
+key encoder는 momentum update해준다.
 
+현재 batch에서 augumenation된 이미지는 queue에 enqueue한다 queue내에 존재하는 과거의 representation은 deque한다.
+encoder가 갱신됨에 따라 과거의 representation은 consistent하지 않기 떄문이다 query encoder는 학습이 진행되면서
+갱신이 되고, key enocder는 momentum 기법을 사용하여 서서히 갱신한다.
 
+#### contrasitive learning as dictionary look-up
 
+![image](https://user-images.githubusercontent.com/65720894/132467092-3d8e7966-e466-4406-af91-fc3de43ca773.png)
 
+#### momentum update
 
+![image](https://user-images.githubusercontent.com/65720894/132467630-0d4322bf-1875-447f-b2f0-3a9e9dfe5f32.png)
+
+### code
+
+![image](https://user-images.githubusercontent.com/65720894/132467677-f469dc00-a20c-4026-917d-9d6d30dd7a7f.png)
+
+코드를 보면 x_q 와 x_k는 서로다른 agumentation한 결과이다 그리고 만들어진 데이터쌍을 인코더를 통해 특징을
+추출한 값이 크기가 NxC인 특징 벡터이다. 이를 벡터곱을 통해 유사도를 측정한다 따라서 bmm , mm함수를 통해 이를 수행하고
+이를 concat한 것을 crossentropy를 통해 손실값을 구하고 backwarkd과정을 거친다
+
+query enocder를 업데이트 해주고 key encoder는 momentum update해준다 마지막으로 학습을한 key value들로 
+queue를 change해준다
+
+### Experiment
+
+![image](https://user-images.githubusercontent.com/65720894/132469383-fe3134f9-c67a-4496-8368-96d576f0cb9e.png)
 
