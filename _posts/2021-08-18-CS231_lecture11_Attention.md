@@ -144,6 +144,47 @@ d x d 차원의 매트릭스와 input sequnce를 곱하여 멀티헤드 값을 �
 
 
 
+-----------
+#### 2021-10-5일 추가수정
+
+## 단어임베딩
+
+Transformer자체에는 입력 시퀀스 위치에 대한 정보가 없으니 positional encoding이 필요하다. 이를 정의해보자면 주어진 시퀀스에서 특정한 위치를 유한한 차원의 벡터로 나타낸 것을 말한다.
+예를 들어 시퀀스 A[a1, a2 ,a3]가 주어졌을때 Positianal encoding의 결과는 시퀀스의 원소의 위치와 원소의 위치에 대한 정보를 담고있는 텐서가 될 것이고 Transformer에서는 입력 시퀀스의 각원소별
+ 임베딩 결과와 positional encoding의 결과가 더한 값을 단어임베딩의 입력으로 하기 때문에 positional encoding의결과는 [시퀀스의 길이 , 임베딩 차원]의 크기를 가져야한다
+
+
+### Continous binary vector
+시퀀스의 각위치를 표현하는 d_model 차원의 encoding벡터를 만들었을떄, 그것이 연속적인 함수로 표현되면 좋을 것이다, 이를 sin함수를 통해 구현가능한데 sin함수는 [-1,1]로 값이 위치해있어
+이미 정규화 또한 되어있다. 
+
+![image](https://user-images.githubusercontent.com/65720894/136031074-6e52ac8a-f8f8-43c3-943c-fc13ebc91559.png)
+
+아래의 아날로그 음량 버튼이라 생각해보자 각 버튼인 [0 ,1]의 범위를 가지고 0과 1을 반복할 것이다.또한 512개의 음량 버튼이 존재한다고 했을 때 하나의 큰 버튼이 아니라 d_model개의 작은
+버튼으로 부터 음량 레벨을 맞춘다 각 버튼이 가르키는 값에 따라 연속적인 특정 음량을 나타낼 수 있을 것이다 즉 맞추고자 하는 특정음량을 시퀀스의 위치라고 생각하면 해당 위치에 존재하는
+d_model개의 dial의 0 /1을 조정함으로써 표현 가능하다는 것이다
+
+
+### Positional Encoding
+
+![image](https://user-images.githubusercontent.com/65720894/136025724-568c5ae1-a2f9-44de-a3e1-bc70715aad3f.png)
+
+Positional Encoding은 다음과 같이 주기 함수를 활용한 공식을 사용하게 된다 이때 sin함수나 cos함수말고도 다른 주기함수를 활용해도 괜찮다. 
+즉 주기함수를 통해 모델이 어떤 문장에 있는 단어의 상대적인 위치를 학습할 수 있게 된다면 그 형태는 상관없다.
+
+![image](https://user-images.githubusercontent.com/65720894/136027044-d98d198f-dcb5-45ef-900d-35d787c0d6f7.png)
+
+학습을 통해 구한 일반 일반 임베딩 값과 위치 인코딩값을 element wise하게 더해준다. 그렇다면 위치정보를 가지고 있는 임베딩 값을 만들어 낼 수 있다!
+
+![image](https://user-images.githubusercontent.com/65720894/136038742-0ffd2183-669d-4536-b931-a53e03b91dc4.png)
+
+![image](https://user-images.githubusercontent.com/65720894/136038788-d3030c12-29af-4430-867f-1c4924fbb3d4.png)
+
+
+
+
+
+
 
 
 
