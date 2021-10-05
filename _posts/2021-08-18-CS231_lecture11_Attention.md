@@ -178,7 +178,8 @@ Positional Encoding은 다음과 같이 주기 함수를 활용한 공식을 사
 
 ![image](https://user-images.githubusercontent.com/65720894/136038742-0ffd2183-669d-4536-b931-a53e03b91dc4.png)
 
-![image](https://user-images.githubusercontent.com/65720894/136038788-d3030c12-29af-4430-867f-1c4924fbb3d4.png)
+![image](https://user-images.githubusercontent.com/65720894/136038915-e5466d51-655f-40d7-bd05-6f05d0cf1f80.png)
+
 
 
 
