@@ -613,13 +613,14 @@ Epoch: 10 | Time: 0m 40s
                                     
                                     
 학습된 모델저장       
-                                    ```
-                                    # 학습된 모델 저장
+```
+# 학습된 모델 저장
 from google.colab import files
 
 files.download('transformer_german_to_english.pt')
-                                    
-                                    ```
+                                   
+```
+				    
 저장된 모델 평가
                                     
 ```
