@@ -1,8 +1,15 @@
 ---
-title: "How to make github blog?"
-date: 2020-07-23 08:26:28 -0400
-categories: Github blog markdown
+layout: post
+title: "[Blog] How to make github blog?"
+subtitle:   "first post"
+categories: others
+tags: github blog
+comments: true
 ---
+
+
+
+
 github를 이용한 마크다운 연습하기 1..
 ---
 

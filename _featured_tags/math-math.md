@@ -1,8 +1,8 @@
 ---
 layout: tag-blog
-title: EnvOps
-slug: envOps
-category: envOps
+title: Math
+slug: math
+category: math
 menu: false
 order: 1
 ---
