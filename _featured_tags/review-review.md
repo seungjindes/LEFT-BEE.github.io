@@ -1,8 +1,8 @@
 ---
 layout: tag-blog
-title: Others
-slug: others
-category: others
+title: Review
+slug: review
+category: review
 menu: false
 order: 1
 ---

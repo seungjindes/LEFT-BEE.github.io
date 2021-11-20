@@ -1,7 +1,7 @@
 ---
 layout: tag-blog
-title: Rdbms
-slug: rdbms
+title: Statistics & R
+slug: r
 category: dev
 menu: false
 order: 1
