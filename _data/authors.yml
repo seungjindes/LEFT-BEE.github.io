@@ -58,8 +58,7 @@ theorydb:
     # stumbleupon:     <username>
     # paypal:          <username>
     email:           gkstmdwls1999@gmail.com
-    #rss:             https://theorydb.github.io/feed.xml
-
+    #rss:             
 # Another author
 mdo:
   name:              <firtname> <lastname>
