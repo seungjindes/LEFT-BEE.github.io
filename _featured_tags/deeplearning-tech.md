@@ -1,8 +1,8 @@
 ---
 layout: tag-blog
-title: DL
-slug: dl
-category: dev
+title: Tech
+slug: tech
+category: deeplearning
 menu: false
 order: 2
 ---

@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "[Blog] How to make github blog?"
-subtitle:   "first post"
+subtitle: "first post"
 categories: others
 tags: github blog
 comments: true
@@ -11,11 +11,6 @@ comments: true
 
 
 github를 이용한 마크다운 연습하기 1..
----
-
-
-본 블로그는 'https://gist.github.com/ninanung/73addc0263b34da5f021d2f02a356b7f'를 보고 그저 따라한것입니다  
-
 
 ------------------------------------------------
 

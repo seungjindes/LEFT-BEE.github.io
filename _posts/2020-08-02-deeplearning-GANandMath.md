@@ -1,9 +1,13 @@
 ---
-title: "일반적인 GAN에 대한 심화이해"
-categories: GAN
-use_math: true
+layout: post
+title: "[GAN] 일반적인 GAN에 대한 심화이해"
+subtitle: "generative model에 대한 이해를 위해 작성한 글"
+categories: deeplearning
+tags: tech  
 comments: true
 ---
+
+## Gan의 심화이해
 
 이전에도 공부했지만 GAN모델은 생성자와 구분자의 적대적 학습의 결과라고 할 수 있다. 우리의 목표는 real data x를 이용해 생성기의 분포 p_g를 학습시키는 것이다. 이를 위해 생성기의 input이 될 noise z~p_z(z)를 몇개 만들어 이를 생성기에 넣어 fake data G를 만든다 구분기는 input X가 realdata에서 왔을 확률 D를 구한다.
 
