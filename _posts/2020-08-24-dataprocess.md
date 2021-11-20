@@ -3,6 +3,18 @@ title: "데이터 전처리"
 date: 2020-08-20
 ---
 
+---
+layout: post
+title: "데이터 전처리 방법"
+subtitle: "how to dataprocess"
+categories: deeplearning
+tags: tech
+comments: true
+---
+
+
+### 데이터 전처리의 필요성
+
 인공신경망은 설계가 구현 이상으로 중요하다. 설게와 구현의 최적화가 performance에 미치는 비중으로 치자면 이론적 설계 단계가 훨씬 더 높은 가중치를 
 지니고 있다. 그 설계의 부분에서도 비중이 큰것이 바로 데이터의 전처리이다.
 

@@ -1,8 +1,8 @@
 ---
 layout: tag-blog
-title: Tech
-slug: tech
+title: Code
+slug: code
 category: deeplearning
 menu: false
-order: 3
+order: 2
 ---

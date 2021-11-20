@@ -1,10 +1,11 @@
 ---
-title: "Conditional GAN 예제코드(건물을 만들어보자 with TensorFlow examplecode"
-categories: GAN
-use_math: true
+layout: post
+title: "[GAN] CGAN 예제코드를 통한 이해"
+subtitle: "Tensorflow example code"
+categories: deeplearning
+tags: code 
 comments: true
 ---
-
 
 ## Tensorflow example code
 
