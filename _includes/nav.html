@@ -12,7 +12,7 @@
   {% for node in pages %}
   {% assign count = count | plus: 1 %}
     <li>
-      <input type="checkbox" id="list-item-{{ count }}"/>
+      
       <div  class="list-wrapper">
       <a class="sidebar-nav-item{% if page.url == node.url %} active{% endif %}" href="{{ node.url | relative_url }}">{{ node.title }}</a>
        {% if node.submenu %}<label class="folder" for="list-item-{{ count }}">▾</label>{% endif %}
