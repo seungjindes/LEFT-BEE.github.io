@@ -1,9 +1,4 @@
 ---
-title: "데이터 전처리"
-date: 2020-08-20
----
-
----
 layout: post
 title: "데이터 전처리 방법"
 subtitle: "how to dataprocess"

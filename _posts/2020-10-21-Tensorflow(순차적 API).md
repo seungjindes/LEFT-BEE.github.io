@@ -1,9 +1,12 @@
 ---
-title : "Tensroflow의 모든것을 공부(순차적API) "
+layout: post
+title: "[Tensorflow] 순차적 API"
+categories: deeplearning
+tags: tech
+comments: true
 ---
 
-이런저런 일이 있었지만 이번만큼은 절대 저장하고 갈것이다.
-----------------------------------------------------------
+### tensorflow 순차적 API실습
 
 ## Sequential 모델
 

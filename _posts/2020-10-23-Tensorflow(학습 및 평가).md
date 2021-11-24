@@ -1,6 +1,12 @@
 ---
-title : "학습 및 평가"
+layout: post
+title: "[Tensorflow] 학습 및 평가"
+categories: deeplearning
+tags: tech
+comments: true
 ---
+
+### Tensorflow 학습 및 평가 코드 실습 
 
 ## 학습 및 평가
 ----------------------

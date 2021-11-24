@@ -1,5 +1,9 @@
 ---
-title : "Transfer learning and fine - turning"
+layout: post
+title: "[Tensorflow]"
+categories: deeplearning
+tags: tech
+comments: true
 ---
 
 ## Introduction 

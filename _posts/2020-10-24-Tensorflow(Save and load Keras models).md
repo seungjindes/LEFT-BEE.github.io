@@ -1,8 +1,12 @@
 ---
-title : "Making new Layers and Models via subclassing:"
+layout: post
+title: "[Tensorflow] Save and load Keras models"
+categories: deeplearning
+tags: tech
+comments: true
 ---
 
-## Save and Load Keras models
+### Save and Load Keras models
 ---------------------------------------------
 
 ### 도입부

@@ -1,5 +1,5 @@
 ---
-title : ""Training Neural Networks, Part1 / CS231n 6강 정리"
+title : "Training Neural Networks, Part1 / CS231n 6강 정리"
 categories : "cs231"
 ---
 

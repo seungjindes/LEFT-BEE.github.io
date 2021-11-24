@@ -1,7 +1,12 @@
 ---
-title: "Tensorflow(Keras Function API)공부"
+layout: post
+title: "[Tensorflow] Keras Function API"
+categories: deeplearning
+tags: tech
+comments: true
 ---
 
+### tensorflow 기능적 API실습
 ## 기능적 API
 
 keras모델을 하나 만들어보자 우선 입력노드를 생성하도록하자
