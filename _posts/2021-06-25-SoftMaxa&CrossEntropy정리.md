@@ -1,6 +1,9 @@
 ---
-title : "최대우도측정과 SoftMax 분류기 그리고 CrossEntropy까지"
-categories : "내용정리"
+layout: post
+title: "[Information Theory] Relation of Likelihood Estimation and SoftMAX and CorssEntropy"
+categories: math deeplearning
+tags: tech math
+comments: true
 ---
 https://hyunw.kim/blog/2017/10/26/Cross_Entropy.html
 본 내용은 위 사이트에 친절하게 나와있으니 크로스엔트로피 개념이 기억나지 않는다면 방문하자

@@ -1,5 +1,9 @@
 ---
-title: "수치해석 project : randomforest 개념정리"
+layout: post
+title: "[Machine Learning] Random Forest"
+categories: deeplearning
+tags: tech machinelearning
+comments: true
 ---
 
 Randomforest는 ensemble(양상블) machine learning 모델이다. 여러개의 decision tree를 형성하고 새로운 데이터 포인트를 각 트리에 동시에 통과 시키며

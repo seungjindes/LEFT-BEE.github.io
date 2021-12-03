@@ -1,9 +1,12 @@
 ---
-title : "Training Neural Networks, Part1 / CS231n 6강 정리"
-categories : "cs231"
+layout: post
+title: "[CS231N] lecture6 review"
+categories: summary
+tags: summary cs231n
+comments: true
 ---
 
-## Training Nerual Networks Part1
+### Training Nerual Networks Part1
 
 ------------
 #### 이번에는 Neural Networks를 학습시키는 것에 대해 나누어 수업을 진행한다 이에 관한 코드 실습(assignment)는 AI_KMU에 저장되어있다.

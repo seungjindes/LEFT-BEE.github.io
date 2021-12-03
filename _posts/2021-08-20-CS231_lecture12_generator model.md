@@ -1,7 +1,12 @@
 ---
-title : "Generator Model / CS231n 12강 정리"
-categories : "cs231"
---- 
+layout: post
+title: "[CS231N] lecture12 review"
+categories: summary
+tags: summary cs231n
+comments: true
+---
+
+### Generator Model
 
 #### generator 모델은 이미 gan을 통해 고화질 이미지를 생성할 수 있게 되었고 이전에 나온 논문중에서는 알면 좋은 점들만을 가지고 요악할 것이다
 #### 또한  gan은 assginment를 통해 더 알아 볼 예정이다. 

@@ -1,9 +1,12 @@
 ---
-title : "Training Neural Networks, Part2 / CS231n 7강 정리"
-categories : "cs231"
+layout: post
+title: "[CS231N] lecture7 review"
+categories: summary
+tags: summary cs231n
+comments: true
 ---
 
-## Training Nerual Networks Part2
+### Training Nerual Networks Part2
 
 ----
 

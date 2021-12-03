@@ -1,8 +1,8 @@
 ---
 layout: post
-title: "[Tensorflow]"
+title: "[Tensorflow] Transfer Learning"
 categories: deeplearning
-tags: tech
+tags: tech tensorflow
 comments: true
 ---
 

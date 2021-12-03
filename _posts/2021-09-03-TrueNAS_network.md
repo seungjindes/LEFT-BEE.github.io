@@ -1,8 +1,10 @@
 ---
-title : "TrueNas를 통한 미디어서버 구축"
-categories : "network"
---- 
-
+layout: post
+title: "[Server] Building a NAS Server"
+categories: others
+tags: others server
+comments: true
+---
 
 ## TrueNAS Server
 

@@ -1,9 +1,12 @@
 ---
-title : "Recurrent Neural Networks / CS231n 10강 정리"
-categories : "cs231"
+layout: post
+title: "[CS231N] lecture10 review"
+categories: summary
+tags: summary cs231n
+comments: true
 ---
 
-## Recurrent Neural Networks
+### Recurrent Neural Networks
 ----
 
 RNN에 대해서는 어렴풋이 회귀모델로만 아주조금 알고 있었을 뿐이다 지금까지 배운 네트워크는 one to one model로 하나의 

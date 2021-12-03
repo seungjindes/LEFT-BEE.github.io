@@ -1,9 +1,9 @@
 ---
 layout: post
-title: "[Blog] How to make github blog?"
+title: "[Markdown1] How to make github blog"
 subtitle: "first post"
-categories: others
-tags: github blog
+categories: others eureka
+tags: github eureka
 comments: true
 ---
 

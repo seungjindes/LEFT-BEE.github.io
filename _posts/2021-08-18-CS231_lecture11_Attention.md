@@ -1,9 +1,12 @@
 ---
-title : "Attention / CS231n 11강 정리"
-categories : "cs231"
---- 
+layout: post
+title: "[CS231N] lecture11 review"
+categories: summary
+tags: summary cs231n
+comments: true
+---
 
-#### attention part는 동영상 강의자료가 없으므로 논문리뷰로 대체한다. 모든 자료는 youtube에 나동빈님의 자료를 이용하였습니다.
+### attention 
 
 -------------
 

@@ -1,7 +1,10 @@
 ---
-title : "AutoEncoder의 이해와 manifold"
-categories : "study"
---- 
+layout: post
+title: "[Model Review] Auto Encocer Review"
+categories: deeplearning
+tags: paper model
+comments: true
+---
 
 이전에 읽은 EbGAN은 generator와 discriminator의 관계를 에너지 역학적 관계로 표현하여 성능을 끌어올렸다 이때 사용된 개념이
 autoenocer이다. 

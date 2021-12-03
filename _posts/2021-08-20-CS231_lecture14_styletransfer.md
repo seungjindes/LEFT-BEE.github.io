@@ -1,7 +1,11 @@
 ---
-title : "StyleTransfer / CS231n 14강 정리"
-categories : "cs231"
---- 
+layout: post
+title: "[CS231N] lecture14 review"
+categories: summary
+tags: summary cs231n
+comments: true
+---
+### style transfer
 
 ####  동영상 강의자료가 없으므로 논문리뷰로 대체한다. 모든 자료는 youtube에 나동빈님의 자료를 이용하였습니다.
 

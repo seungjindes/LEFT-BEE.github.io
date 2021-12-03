@@ -1,7 +1,10 @@
 ---
-title : "Transformer코드리뷰"
-categories : "study"
---- 
+layout: post
+title : "[Code Review] Transformer Code Reivew"
+categories: deeplearning
+tags: code
+comments: true
+---
 
 ## Attention is All you need 실습 
 

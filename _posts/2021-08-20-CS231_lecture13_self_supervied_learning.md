@@ -1,7 +1,12 @@
 ---
-title : "self_supervised_learning / CS231n 13강 정리"
-categories : "cs231"
---- 
+layout: post
+title: "[CS231N] lecture13 review"
+categories: summary
+tags: summary cs231n
+comments: true
+---
+
+### supervised learning
 
 -------------
 ## what is self supervised learning 

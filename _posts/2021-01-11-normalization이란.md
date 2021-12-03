@@ -1,6 +1,8 @@
 ---
-title: "Introduce Normalization"
-categories: "study"
+layout: post
+title: "[Deep Learning] Normalization"
+categories: deeplearning
+tags: tech 
 comments: true
 ---
 
