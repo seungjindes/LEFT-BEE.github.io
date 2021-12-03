@@ -16,7 +16,7 @@ This `Readme.md` file describe how to build my git blog and it show the result
 * 사이트에 favicon 추가 (5%) (✔)
 ----
 
-### Build Git bl
+## Build Git blog
 
 Remote Repository를 자신의 이름으로 생성해줍니다.   
   
@@ -47,6 +47,8 @@ ruby에서 지원하는 gem명령어를 통해 jekyll과 gem을 설치 해줍니
 구축된 블로그를 로컬환경에서 실행하려면 다음 코드를 실행한다.
   
 `jekyll new theorydb.github.io`
+  
+### git blog file
   
 이후 다양한 파일과 폴더들이 생성되는 데 각각 이렇게 정의된다.
 
@@ -79,6 +81,8 @@ LEFT-BEE.github.io
 - .eslintrc : EcmaScript Lint 관련 환경 설정 파일
 - .babelrc : Babel(Javacss compiler) 설정파일
  ```
+  
+### 파일을 local repo에 올리기
   
 수정한 파일을 GitHub 저장소에 올리기 위해 다음과 같은 과정을 거친다.
 
