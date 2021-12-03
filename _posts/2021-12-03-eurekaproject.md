@@ -15,7 +15,7 @@ This `Readme.md` file describe how to build my git blog and it show the result
   
 **선택 과제(20%)**
 * Post에 댓글 기능 추가 (10%) (✔)
-* 수업시간에 다루어지지 않은 기능(Google Analytics, Jekyll-admin 등)을 추가하고 이를 추가하는 과정을 Post로 작성(5%)( )
+* 수업시간에 다루어지지 않은 기능(Google Analytics, Jekyll-admin 등)을 추가하고 이를 추가하는 과정을 Post로 작성(5%)(✔)
 * 사이트에 favicon 추가 (5%) (✔)
 ----
 
@@ -210,10 +210,50 @@ google analytics에 가입하여 블로그에 오는 사용자들의 데이터�
 
 ![image](https://user-images.githubusercontent.com/65720894/144599901-5dc76d94-dca1-4026-8ea0-ececa9f9fad6.png)
 
-
-
-
-
-
+---
   
+## Tipue Search
+
+`Tipue Search` 는 Jqurey를 활용해서 만들어진 site search plugi이다. 
+
+해당 사이트에서 jekyll-tipue-search-master.zip 파일을 다운받아 압축을 푼다.   
+[Tipue Github Repo](https://github.com/jekylltools/jekyll-tipue-search)
+
+압축을 풀면 나오는 `search.html` 파일을 깃 블로그 최상위 디렉토리에 넣어주고   
+`assets/`안에 있는 `tipuesearch` 폴더를 깃 블로그의 'assets'에 넣어준다.
+
+`tipuesearch`의 내용은 다음과 같다.
+
+![image](https://user-images.githubusercontent.com/65720894/144602866-514ced07-4092-435b-b67c-83300c2ea4a6.png)
+
+이후 `config.yml`파일에 다음과 같은 코드를 추가해준다.
+
+![image](https://user-images.githubusercontent.com/65720894/144603092-69c6269a-acc3-4d3c-95ab-5f2377e51b92.png)
+
+include의 `pages : false`의 설정은 pages 레이아웃에 해당하는 html페이지는 검색하지 않겠다는 것을 의미한다.   
+exclude의 `search.html , index.html , tags.html` 페이지는 검색에서 제외하겠다는 것을 의미한다.
+
+'head.html' 파일을 열어 `LINKS`영역 바로 위의 위치에 다음의 코드를 추가한다.
+
+![image](https://user-images.githubusercontent.com/65720894/144603556-70cb1d3e-2cd2-44ab-9fce-c5db9232f87e.png)
+
+그 다음 `search.html`에 파일을 열어 아래와 같이 코드를 다음과 같이 설정해준다.
+
+![image](https://user-images.githubusercontent.com/65720894/144604088-10a2e381-6254-4fc2-a124-c70c2c2d95bf.png)
+
+위의 설정 내용은 위의 `tipue` 깃에 나와있다.
+
+마지막으로 `sidebar.html` 에 아래와 같이 설정한다. 본인은 검색창을 사이드 바에 위치하게 해서 `sidebar.html`에 코드를 추가해주었다.
+
+![image](https://user-images.githubusercontent.com/65720894/144605978-fa0c56ee-2de9-412e-a0ec-e45058549981.png)
+
+아래와 같이 잘 실행되는 것을 볼 수 있다.
+
+
+
+
+
+
+
+
   
