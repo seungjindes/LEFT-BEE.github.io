@@ -88,7 +88,7 @@ Git Bash를 실행한 후, 아래 코드와 같이 모든 파일을 local reposi
   
 수정된 파일들을 local repo에 commit해주고 push해준다.
   
-`git commit -m "git blog"
+`git commit -m "git blog"`
   
 `git push`
 
