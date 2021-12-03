@@ -103,11 +103,18 @@ Git Bash를 실행한 후, 아래 코드와 같이 모든 파일을 local reposi
   
 ---
   
-## 저자 및 설정 파일 설정
+## 블로그 소개 
   
-`_data` 폴더 안에 `authors.yml`파일은 블로그의 저자를 수정할 수 있다.
+`_data` 폴더 안에 `authors.yml`파일은 블로그의 저자를 수정할 수 있다. 
  
 ![캡처.JPG]({{site.baseurl}}/_posts/캡처.JPG)
+  
+  
+  
+### 
+  
+  
+
 
   
 
