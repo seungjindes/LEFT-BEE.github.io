@@ -196,7 +196,23 @@ favicon은 웹 브라우저 주소창에 표시되는 대표아이콘인데 본�
 
 ---
 
-##
+## google analytics
+
+google analytics에 가입하여 블로그에 오는 사용자들의 데이터를 분석한다.
+ 
+![image](https://user-images.githubusercontent.com/65720894/144599406-cf50d0d4-7190-42d4-8be8-6be62f23d64b.png)
+
+![image](https://user-images.githubusercontent.com/65720894/144599682-36dcad18-a0b9-4bbd-8e8b-64a6dcc9c32a.png)
+
+![image](https://user-images.githubusercontent.com/65720894/144599741-f6c3048a-37e8-49e8-b2e8-3c9f7e7c2a5e.png)
+
+위의 과정을 모두 수행하면 측정 ID를 얻게 되는데 이를 코드에서 수정해주어야 한다.
+
+![image](https://user-images.githubusercontent.com/65720894/144599901-5dc76d94-dca1-4026-8ea0-ececa9f9fad6.png)
+
+
+
+
 
 
   
