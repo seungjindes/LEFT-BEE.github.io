@@ -247,9 +247,9 @@ exclude의 `search.html , index.html , tags.html` 페이지는 검색에서 제�
 
 ![image](https://user-images.githubusercontent.com/65720894/144605978-fa0c56ee-2de9-412e-a0ec-e45058549981.png)
 
-아래와 같이 잘 실행되는 것을 볼 수 있다.
+아래와 같이 잘 실행되는 것을 볼 수 있다. 아래 예시는 검색창에 GAN을 검색했을 때 나오는 페이지이다.
 
-
+![image](https://user-images.githubusercontent.com/65720894/144606339-a1a9a3c4-1f27-4fca-bcc6-5fe13299cc35.png)
 
 
 
