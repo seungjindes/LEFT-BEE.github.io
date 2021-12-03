@@ -105,18 +105,99 @@ Git Bash를 실행한 후, 아래 코드와 같이 모든 파일을 local reposi
   
 ## 블로그 소개 
   
-`_data` 폴더 안에 `authors.yml`파일은 블로그의 저자를 수정할 수 있다. 
+`_data` 폴더 안에 `authors.yml`파일은 블로그의 저자를 수정할 수 있다.    
+
+name과 email에 자기 자신의 정보를 입력하고 about에 소개를 적는다.   
+src , 1x , 2x에는 나의 프로필 사진을 저장해주면 된다.
  
-![캡처.JPG]({{site.baseurl}}/_posts/캡처.JPG)
-  
-  
-  
-### 
-  
-  
+![image](https://user-images.githubusercontent.com/65720894/144588955-93917bfe-5641-4677-9ef2-a2d46ca48b7e.png)
+![image](https://user-images.githubusercontent.com/65720894/144589768-a774e5a4-2f16-402d-a907-05f45e85c4fc.png)
 
-
+그 외 `description`에 자가자신의 소개와 프로필 이미지를 설정해준다.
   
+---
+## 카테고리
+  
+카테고리는 `featured_categories` , `featured_tags` 폴더를 이용해 만들어준다. 딥러닝에 관심이 많으므로 `DeepLearning` 이라는 대 카테고리에서   
+딥러닝 기술요소를 설명하는 `tech` , 논문 리뷰를 위해 'paper' , 코드분석을 위해 `code`와 같이 소 카테고리를 만들어 주었다. 
+  
+그 외 `math` , `others`와 같은 카테고리를 만들어 포스트의 카테고리에 맞게 정리할 수 있게 만들었다.    
+**여기서 'Eureka Project'는 이번 깃 블로그를 만드는 과정을 서술 및 과제내용을 수행하기 위해만든 임시 카테고리이다**
+
+`DeepLearning.md` 의 내용은 아래와 같다.
+  
+```
+layout: list
+title: DeepLearning
+slug: deeplearning
+menu: true
+submenu: true
+order: 2
+description: >
+  딥러닝 및 머신러닝에 필요한 지식 정리
+```
+ 
+---
+  
+## 사이드 바 
+  
+사이드 바는 `sidebar.html`의 파일에서 정의 되며 위의 요소들을 입력하면 아래와 같이 적용된다.
+
+![image](https://user-images.githubusercontent.com/65720894/144591831-238b48f5-3cf7-4df4-9f3e-f2d2f6c14fe8.png)
+
+---
+## 포스트 
+ 
+포스트는 `_posts` 폴더에 저장된다. 포스트내에서 title과 Category, tag, comments 등을 아래의 예시 같이 정의해준다.   
+포스팅은 마크다운 형식으로 작성해주면 된다.
+
+```
+---
+layout: post
+title: "[Markdown2] How to make github blog"
+subtitle: "Markdown 사용법2"
+categories: others eureka
+tags: github eureka
+comments: true
+---
+```
+![image](https://user-images.githubusercontent.com/65720894/144593362-109d28f6-2530-4df4-aa17-38df2f312998.png)
+
+---
+## 댓글 기능 
+
+`Disqus` 를 사용해서 블로그에 댓글 기능을 추가시켰다.   
+
+이후 `config.yml`에서 다음과 같이 disqus에서 설정해주었던 shortname과 `disqus : True`라 설정 해준다.
+  
+![image](https://user-images.githubusercontent.com/65720894/144594853-be55b273-0ba1-4756-ae53-2f43f630751e.png)
+
+comments의 UI는 다음과 같이 `comments.html`에 정의되어있다.  
+ 
+위 과정을 모두 수행하고 post를 할때 comments : true 라고 설정해주면 아래와 같이 댓글창이 생긴다.
+
+![image](https://user-images.githubusercontent.com/65720894/144595548-63de51d3-bda6-431a-820d-20ee749b7f87.png)
+
+---
+## favicon 설정
+
+favicon은 웹 브라우저 주소창에 표시되는 대표아이콘인데 본인은 codegongbang의 c를 의미하는 이미지를 사용하였다.
+  
+![image](https://user-images.githubusercontent.com/65720894/144595861-dc445edd-372d-4ad1-86b2-09f2061c9b91.png)
+
+위 이미지는 favicon을 생성해주는 [favicon site](https://www.favicon-generator.org/) 에서 생성해 주었다.    
+그러면 favicon.ico라는 파일이름으로 디렉토리에 넣어주게되면 아래의 코드를 통해 적용된다.
+
+![image](https://user-images.githubusercontent.com/65720894/144596229-410c289a-0d90-428c-9dc9-8c62dffd6b53.png)
+
+실제로 다음과 같이 적용된 것을 볼 수 있다.
+
+![image](https://user-images.githubusercontent.com/65720894/144596284-7c31e206-3510-48e8-891b-c88f47add6a6.png)
+
+---
+
+##
+
 
   
   
