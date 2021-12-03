@@ -1,3 +1,6 @@
+---
+published: false
+---
 ## Make GitHub blog
 
 This `Readme.md` file describe how to build my git blog and it show the result      
@@ -95,5 +98,18 @@ Git Bash를 실행한 후, 아래 코드와 같이 모든 파일을 local reposi
 `git commit -m "git blog"`
   
 `git push`
+  
+이러한 방식을 걸쳐 블로그를 수정하고 이를 원격 저장소에 남길 수 있다.
+  
+---
+  
+## 저자 및 설정 파일 설정
+  
+`_data` 폴더 안에 `authors.yml`파일은 블로그의 저자를 수정할 수 있다.
+ 
+![캡처.JPG]({{site.baseurl}}/_posts/캡처.JPG)
 
+  
+
+  
   
