@@ -1,7 +1,6 @@
 ---
 layout: post
 title: "[Eurekaproject] 블로그 생섭방법"
-subtitle: "QR분래란?"
 categories: eureka
 tags: github eureka
 comments: true
