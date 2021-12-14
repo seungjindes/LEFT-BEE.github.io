@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "[Eurekaproject] 블로그 생섭방법"
+title: "[Eurekaproject] 블로그 생성방법"
 categories: eureka
 tags: github eureka
 comments: true
