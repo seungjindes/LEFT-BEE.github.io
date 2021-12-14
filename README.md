@@ -18,7 +18,7 @@ This `Readme.md` file describe how to build my git blog and it show the result
 
 ## Build Git blog
 
-Remote Repository를 자신의 이름으로 생성해줍니다.   
+먼저 Remote Repository를 자신의 이름으로 생성해줍니다.   
   
 ![image](https://user-images.githubusercontent.com/65720894/144546609-2bfe4a0a-380b-4f75-89e7-9f09ffa4ff2b.png)
 
