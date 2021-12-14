@@ -1,5 +1,10 @@
 ---
-published: false
+layout: post
+title: "[Eurekaproject] 블로그 생섭방법"
+subtitle: "QR분래란?"
+categories: eureka
+tags: github eureka
+comments: true
 ---
 ## Make GitHub blog
 
@@ -209,6 +214,12 @@ google analytics에 가입하여 블로그에 오는 사용자들의 데이터�
 위의 과정을 모두 수행하면 측정 ID를 얻게 되는데 이를 코드에서 수정해주어야 한다.
 
 ![image](https://user-images.githubusercontent.com/65720894/144599901-5dc76d94-dca1-4026-8ea0-ececa9f9fad6.png)
+  
+google analytics를 통해 블로그의 방문자 통계와 같은 정보를 얻을 수 있다.
+  
+![image](https://user-images.githubusercontent.com/65720894/145908521-dde0dae4-63bf-41ec-961c-0616e1096417.png)
+
+![image](https://user-images.githubusercontent.com/65720894/145908552-a53ab637-6521-41b9-bd02-41a201abf47e.png)
 
 ---
   
