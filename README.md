@@ -133,12 +133,29 @@ order: 2
 description: >
   딥러닝 및 머신러닝에 필요한 지식 정리
 ```
- 
+이는 `_layouts` 의 `category-tag-list.html` 그리고 세부 카테고리일 경우 `in-category-tag.html`를 생성해주고 다음과 같이 코드를 추가주면 카테고리 레이아웃이 블로그에 적용된다.
+
+![image](https://user-images.githubusercontent.com/65720894/145911516-23e8d151-586f-438c-8a92-28e71f552674.png) 
 ---
   
+## About.md 
+  
+나를 소개하는 카테고리인 `About.md`는 아래와 같은 레이아웃을 추가시켜준 것이다. 위에서 설정해주었던 프로필 사진과 문구가 들어간다.
+  
+![image](https://user-images.githubusercontent.com/65720894/145911726-d1f8038d-c89f-452a-a7b7-b68259ebdf3a.png)
+
+아래와 같이 적용이 되는 것을 볼 수 있다.
+
+![image](https://user-images.githubusercontent.com/65720894/145911795-cf1a4137-f798-44e9-b4af-1a0534bffb62.png)
+
+---
 ## 사이드 바 
   
-사이드 바는 `sidebar.html`의 파일에서 정의 되며 위의 요소들을 입력하면 아래와 같이 적용된다.
+사이드 바는 `sidebar.html`의 파일에서 정의 되며 위의 요소들을 입력하면 아래의 `sidebar.html`에서 이를 구성한다.
+
+![image](https://user-images.githubusercontent.com/65720894/145912286-f6a63f06-a37e-4e8b-ab01-77f494d34ad9.png)
+  
+본인은 사이드바에 `카테고리`, `About`, `프로필`, `검색기능`, `Git주소`, `메일주소를` 등으로 구성하였다.
 
 ![image](https://user-images.githubusercontent.com/65720894/144591831-238b48f5-3cf7-4df4-9f3e-f2d2f6c14fe8.png)
 
@@ -169,7 +186,7 @@ comments: true
   
 ![image](https://user-images.githubusercontent.com/65720894/144594853-be55b273-0ba1-4756-ae53-2f43f630751e.png)
 
-comments의 UI는 다음과 같이 `comments.html`에 정의되어있다.  
+comments의 UI는 다음과 같이 `comments.html`에 추가시켜주었다.
  
 위 과정을 모두 수행하고 post를 할때 comments : true 라고 설정해주면 아래와 같이 댓글창이 생긴다.
 
