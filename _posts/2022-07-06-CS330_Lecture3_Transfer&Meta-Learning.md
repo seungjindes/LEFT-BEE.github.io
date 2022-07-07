@@ -14,8 +14,10 @@ comments: true
 2. training classes가 많을 수록 학습 성능이 좋아지는지?
 
 ![image](https://user-images.githubusercontent.com/65720894/177710740-2328c020-d66c-4c52-801d-4a67877ae53b.png)
-여기서 파이가 이 네트워크의 파라미터들을 그대로 가져오는건지
+1.여기서 파이가 이 네트워크의 파라미터들을 그대로 가져오는건지
 아니면 문맥벡터? 를 의미하는지?
+2. black box model을 요약해본다면 task 나누고 그냥 train data set과 test set을 모델에 넣고 돌리니깐 잘 나오는게 맞는지?
+
 
 ------ 
 
