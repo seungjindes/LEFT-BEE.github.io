@@ -33,7 +33,14 @@ maml을 이해하기 위한 간단한 표식이다.
 L1, L2, L3로 optimizing 된다 이 optimize 된 결과를 pi라고 할때 theta는 이 pi와 이후 update를 위해 test set 에서 optimize한 결과인 pi* 의 차이를 최소화하는 것을
 목표로 삼는다. 결구 pi = pi* 가 되어야지만, 즉 모든 test task에 대해 최소한의 optimize를 통해 학습되는 theta를 찾는 방향으로 움직이게 되고
 
-아래 그림의 빨간색 동그라미가 그 지점인 것이다. 현재 task마다 theta가 update 되는 것인지 아니면 
+아래 그림의 빨간색 동그라미가 그 지점인 것이다. 현재 task마다 theta가 update 되는 것인지 그렇지 않고 한번에 task가 업데이트 되던 결국에는 test task 를 가장
+빠르게 학습하는 방향으로 theta는 수렴할 것이다. 
+
+이에대해 나는 task 마다 train set이 test set을 통해 theta를 업데이트 하는 것을 도와주는데 지식을 전달한다고 생각한다. 즉 train set을 통해 fine-tuning을 하고
+얻은 지식을 theta 를 update할때 사용하는 것이다. 이는 이후 다루겠지만 pretrained model과 다른 점 중 하나이다.
 
 ![image](https://user-images.githubusercontent.com/65720894/177984362-14a5da61-cd57-486e-a728-46615f41418f.png)
+
+
+
 
