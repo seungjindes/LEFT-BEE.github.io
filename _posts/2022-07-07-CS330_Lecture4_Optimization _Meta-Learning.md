@@ -96,6 +96,19 @@ maml이 좋은 성능을 보이는 것은 sub task 과 main task의 이중 optim
 
 
 세번째 문제는 내부의 gradient step에서 어떤 구조가 효과적인지 찾아야 한다는 것이다. 
+이전의 실험을 통해 큰 신경망에 더불어 비정형화된 신경망이 성능이 뛰어났다고한다.
+
+![image](https://user-images.githubusercontent.com/65720894/178069798-4ecd99d2-afb3-4e83-b4b5-5501a44c46d2.png)
+
+
+maml을 사용하는 것이 이점이 되는 것이 bi-level optimization problem 을 구성한 점이라고 한다.
+따라서 메타 학습을 시작할때 긍정적 귀납적 bias를 얻게 된다고 한다 - 아마 pretrained 된 모델에서 추출한 bias 라고 생각이 된다./
+또한 optimization 구조를 통해 학습률 혹은 최적화를 개선할 수 있다고 한다.
+
+그리고 네트워크가 충분히 큰 경우에도 표현력이 커저 도움이된다.
+
+![image](https://user-images.githubusercontent.com/65720894/178069658-26275b72-5987-44b4-bc60-3ec961495dae.png)
+
 
 
 
