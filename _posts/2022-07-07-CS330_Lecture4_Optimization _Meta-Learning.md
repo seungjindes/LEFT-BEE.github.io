@@ -7,6 +7,7 @@ comments: true
 ---
 
 ## Question 
+pi와 theata 의 차이점이 pi는 optimize한 결과 즉 theta가 움직이는 방향이 맞는지?
 pi* D_i test 를 통해 optimize한 결과가 맞는지?
 MAML 요약 한게 맞는지?
 update는 batch 마다 이루어지는지 아니면 task마다 이루어지는 것이 맞는지?
@@ -79,6 +80,23 @@ inner vector의 learning rate를 자동적으로 학습시키는 것이다. 실�
 마지막으로 문맥 변수를 추가하여 학습진행속도를 늦출 수 있다고한다. 바닐라 모델도 충분한 성능을 보이지만 이러한 간단한 트릭이 도움이된다고한다. 
 
 ![image](https://user-images.githubusercontent.com/65720894/178022504-46f74282-c4c8-4259-84a6-5a0f07e567bf.png)
+
+
+다음 문제는 계산량의 문제이다. 이를 해결하기위한 첫번째 아이디어는 d_pi / d_theta 르 ㄹidentity vector로 근사시킨다는 것인데, 정확한 원리는 생략한다.
+놀랍게도 few-show prblem에서는 잘 작동하지만 어려운 문제를 해결하는데는 문제가 있다고한다.
+
+두번째 아이디어는 last layer만 업데이트를 하는 것이다 마지막으로는 implict function theorem을 사용하여 meta=gradient를 유도한다는 것이다 이 또한 상세한 내용은 강의에서 생략한다. 
+
+
+![image](https://user-images.githubusercontent.com/65720894/178025261-3a273855-885a-45fd-9848-d6ab61d2ba9c.png)
+
+
+maml이 좋은 성능을 보이는 것은 sub task 과 main task의 이중 optimizer 형태가 가능하기 때문이라고 한다. 왜냐하면 maml에서는 끝까지 업데이트를 하지 않으므로 back-propagation
+을 2차로 할 필요가 없고 이는 메모리적으로 작은 연산 메모리를 필요로한다는 것이다. 
+
+
+세번째 문제는 내부의 gradient step에서 어떤 구조가 효과적인지 찾아야 한다는 것이다. 
+
 
 
 
