@@ -15,6 +15,13 @@ theta를 업데이트 할때 사용되는 loss함수는 벡터의 유사도를 �
 
 
 
+아래 그림에서 MAML has benefit of inductive bias without losing expressive power 하다는 것이 어떤 것을 의미하는지?
+assumstion 중 두번째 loss function gradient does not lose information about the label 은 무엇을 의미하는지?
+![image](https://user-images.githubusercontent.com/65720894/178018315-5b736642-5683-446d-9899-ebc6d7f7d761.png)
+
+
+
+
 ## Add Point
 - maml gradient 연산을 할때 full - hesse(헤시안) 행렬을 구하지 않고도 일부분을 구해 계산하는 기술이 존재한다
 - 
@@ -41,6 +48,44 @@ L1, L2, L3로 optimizing 된다 이 optimize 된 결과를 pi라고 할때 theta
 
 ![image](https://user-images.githubusercontent.com/65720894/177984362-14a5da61-cd57-486e-a728-46615f41418f.png)
 
+
+key idea는 결국 optimzation 을 통해 pi를 얻는 것이다.  
+black-box adaptation과 다르게 이 방식은 아래와 같은 방식으로 얻는다 이는 2차도함수를 활용하여 back - propagation을 진행한다.
+
+![image](https://user-images.githubusercontent.com/65720894/178011832-937c0a83-0093-4037-ab10-4fd3ab4f85d1.png)
+
+
+결론적으로 black-box의 pi 는 그 자체로 새로운 task에 대한 정답길? 을 알려주지만 optimization adaptation은 새로운 task들을 학습하기 위한
+최적의 길을 찾기 위해 이름과 같이 모델에 상관없이 적용가능하다는 점이다.
+
+또한 maml은 compuatation graph로 볼 수 있다는 데 이는 나중 강의에서 더 복잡하게 다룬다고 한다.
+
+
+ICLR 2018에 발표된 논문에 따르면 MAML function은 몇가지 assumtions 을 통해 거의 모든 funtion에 근사할 수 있다고 한다. 제약은 아래와 같다.    
+첫번쨰는 학습계수가 0이 아니라는 것 그리고 loss function gradient가 label의 정보를 잃지 않아야한 다는 것인데 ... 무슨소린지 잘 이해가 안감   
+그리고 세번째는 datapoints in D_tr_i가 유일해야한다는 것이다. 
+
+MAML has benefit of inductive bias without losing expressive power. 하다는 점에서 중요하다고한다. - 질문 필요 
+
+![image](https://user-images.githubusercontent.com/65720894/178016826-c9b50d6d-04a2-462c-a9ad-2615fe411646.png)
+
+
+다음은 Optimization-Based Adaptation 가 가지는 문제들과 그 해결책에 대해 말한다.
+
+첫번째는 gradient descent 안에 gradient descent가 들어가 있는 이중 구조가 학습이 불안정하다는 문제이다. 이를 해결하기 위해 몇가지 아이디어가 있는데 하나는
+inner vector의 learning rate를 자동적으로 학습시키는 것이다. 실제로 교수는 inner learning rate가 학습에 매우 중요한 요소라고 말한다.
+
+또다른 아이디어는 내부 루프에서 하위 집합의 파라미터만을 optimize하는 것이다. 이렇게 함으로써 불안성을 줄인다. - 한번에 많은 학습을 하지 않겠다? 라는 의미인것 같다.
+마지막으로 문맥 변수를 추가하여 학습진행속도를 늦출 수 있다고한다. 바닐라 모델도 충분한 성능을 보이지만 이러한 간단한 트릭이 도움이된다고한다. 
+
+![image](https://user-images.githubusercontent.com/65720894/178022504-46f74282-c4c8-4259-84a6-5a0f07e567bf.png)
+
+
+
+
+
+
+ 
 
 
 
