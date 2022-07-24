@@ -136,6 +136,54 @@ Q_star는 Q_1 부터 시작하여 모든 경로에서 얻은 값의 평균으로
 
 
 
+이를 설명하기 위해 다음과 같은 예시를 든다. 드럼을 배우고 싶은 사람의 경로 3가지를 샘플링 할 수 있을 것이다. 
+
+이떄 value function은 아무 연습도 하지 않았으므로 0이 된다. 구리고 Q function에서 a_t가 1일 a1일경우 0 , a3일 경우 한 0.3정도 될 것이다.   
+그리고 Q_star의 경우 이러한 경로의 총합이므로 at = a3 일경우 거의 1에 수렴할 것이다. 그리고 이떄의 V_star는 연습을 열심히 했으므로 1이 될 것이다. 
+
+![image](https://user-images.githubusercontent.com/65720894/180632706-de0bf88c-8d23-469b-b855-28681f6de26d.png)
+
+알고리즘은 다음과 같다. 우리는 gradient descent방식이 아닌 방법으로 Q value를 최대화 하는 방향으로 학습한다 이때 어떤 policy를 추출하여
+데이터 셋을 추출하고 y를 set하는데 Q값이 큰값이 되는 action을 찾아낸다. Q가 최대화 하는 방향은 r이 곧 최대화 하는 방향과 같다. 이는 
+3번째 순서에서 명확하게 나오는데 Q-fuction을 우리의 target 즉 y에 맞추기 위해 두 거리를 최소화 하는 방향으로 pi를 set한다. 
+
+결론적으로 우리는 Q-fuction을 통해 policy pi(a|s)를 얻을 수 있다. 
+
+
+
+![image](https://user-images.githubusercontent.com/65720894/180633200-266ac236-7f3b-43b4-875e-a77d96665142.png)
+
+
+위 그림과 같은 예시를 든다 . 우리는 처음 normal한 distributuin을 가지고 있으며 이중에서 왼쪽 그림과 같이 어떠한 policy를 통해 data를 sampling 한다.
+그리고 이중에서 Q가 최대가 되는 데이터만을 가지와 이를 선택한다. 이후 선택된 데이터에 맞추어 pi를 수정하여 다음과 같이 원이 변형된 거을 확인 가능하다.
+
+
+
+![image](https://user-images.githubusercontent.com/65720894/180633310-ff61a6b8-b2e0-4b05-950f-7d7fe5572a84.png)
+
+
+이렇게 학습하는 방법은 smaple efficient하다. 즉 데이터를 넓게 사용할 수 있는 것이다. 또한 이는 reward가 없더라도 update가 될 수 있고 , 상대적으로
+다른 병렬적으로 학습할 수 있다. 
+
+하지만 다른 메타 알고리즘에 적용하기 어렵다는 단점이 있다.
+
+![image](https://user-images.githubusercontent.com/65720894/180633372-578b97aa-10b1-4bd0-b2c5-87e8638e3df5.png)
+
+강화 학습의 multi-task를 정의한다. 
+
+![image](https://user-images.githubusercontent.com/65720894/180633470-c40ee7e2-b9d1-4fdc-bcbe-04473a4c7f5a.png)
+
+task 에대해 condition을 준다면 해결 될 것 같지만 축구를 예로 들자면 패스를 하려했던 것이 슛으로 들어가 reward를 받는 경우도 존재한다. 이를 반영하기 위해 경험을 통해
+데이터를 만나고 이 데이터를 labeling해주는 기법을 사용한다 이를 사후레이블링이라고 한다 
+
+또한 이전에 배운 gradient 방식과 비교하여 gradient방식은 rward가 0일 시 그 정보를 아애 배재해 버리지만 Q fucntoin은 하지 말아야할 행동에 대해 더욱 강경하게 하지
+말아야한다고 주의를 줄 수 있다. 
+
+
+
+
+
+
 
 
 
