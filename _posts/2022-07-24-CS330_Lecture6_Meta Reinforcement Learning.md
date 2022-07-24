@@ -58,3 +58,95 @@ observation을 얻고 이를 통해 객체를 분류하게 된다. 이러한 경
 의미한다고 봐도 이해가 좋을 듯 하다. 그리고 state의 첫번째 상태 그리고 s,a 에대한 s_prime의 분포를 가진다. 마지막으로
 reward또한 task 내부에서 정의된다.
 
+![image](https://user-images.githubusercontent.com/65720894/180629114-d3e6905b-54e0-4a4e-b33a-7f414e58d8b8.png)
+
+이후는 강화학습의 multi-task에 대해서 소개한다. 우리는 S를 다시 S = (S_orgin , condition = Z_i) 와 같이 정의한다. 
+이를 통해 S가 특정한 task라는 것을 조건을 주게된다. 이때 Condition은 ont-hot-encoding일 수도 있고 laguage discription
+일 수도 있다. 
+
+보상측면에서는 이전과 같이 보상을 최대화 하는 방향으로 학습, 그리고 distance(S , S_g)를 최소화 하는 것과 같다.
+
+![image](https://user-images.githubusercontent.com/65720894/180629854-dd6034ff-4759-4952-b3be-6b20644a78fa.png)
+
+이전에 도식을 다시 정리하면 다음과 같이 표현가능하다. 알고리즘은 3단계로 표현하며 각 gradient , Q-learnig, model-based 하게 설명하고있다.   
+이때 policy는 정책으로 우리가 최적화 해야하는 것이다. 
+
+이번 강의에서는 policy gradient한 방식과 Q-learnig의 방식에 집중하고 이후 많은 강의에서 model-based한 방법에 대해 다룬다고 한다.  
+
+
+---- 
+
+### policy gradient 
+
+![image](https://user-images.githubusercontent.com/65720894/180630333-0f93dafe-f404-4c56-8a2c-7f69c775a72e.png)
+
+policy에 대해 데이터가 무조건 policy의 흐름을 따라야 하는 것인지 아니면 그럴 필요가 없는 작업인지 나뉜다. om-policy 는 대부분의 rl 학습에 적용되는 알고리즘이고
+이는 이전에 사용하였던 데이터는 다시 쓸 수 없는 방식이다 하지만 off-policy의 경우 어떤 시점이던 다시 사용하던, 심지어 다른 policy의 정보라도 사용한다 이는 
+특수한 task에서 사용된다고 한다.
+
+![image](https://user-images.githubusercontent.com/65720894/180630439-335d7ab7-78c6-44c9-b0c6-b87a7d33ce5e.png)
+
+오른쪽 그림을 보면 화살표 하나가 policy라고 생각하면 좋을 것 같다 (아닐 수도 있다..)
+
+위 수식을 보면 p_theta(tau)가 있다. tau는 위필기 처럼 최대 우도 추정에 의해 각 시점에서 pi라는 policy를 따르는 분포를 의미한다. 따라서 이러한 분포를 따르면서도,
+보상을 최대화 하는 방향으로 업데이트 해야만 하고 이때 손실함수를 다음과 같이 정의할 수 있다. 
+
+우리는 pi policy의 모든 값을 가져올 수 없으므로 샘플링을 통해 평균을 낸다. 
+
+![image](https://user-images.githubusercontent.com/65720894/180630830-08899b28-8a42-403e-b41c-9493dc6c6a74.png)
+
+이후 증명을 통해 최종적으로 기울기가 다음과 같이 수식이 정의됨을 강의에서는 보인다. 우리는 이를 통해 theta를 update할 것이다
+supervised learning과 매우 유사한것 같다. 여기서 중요한 점은 pi_theta(a_t | s_t)에서 샘플 i개를 뽑아서 이에대해 수식을 적용하는데 있는 것 같다.
+
+
+
+![image](https://user-images.githubusercontent.com/65720894/180631582-0b296148-dddb-4066-be28-1690db81ce0e.png)
+
+
+일반적인 ML 문제의 최대 우도 솔루션과 RL에서의 gradient 솔류션을 비교하고 있다. 보이는 것처럼 매우 유사한 구조를 가진다. 하지만 RL learning에서는 reward라는 
+변수가 존재하여 만약 reward가 0에 가까울 시 해당 policy는 update를 하지 못하고 1에 가까울 수록 그 방향으로 학습하게 될 것이다. 즉, 궁극적으로 보상을 최대한 
+많이 받게 되는 pi 분포를 찾는 것이 목표가 될 것이다. 
+
+![image](https://user-images.githubusercontent.com/65720894/180631672-2a314be4-e52d-40db-9312-0bb7efc27c4e.png)
+
+
+Policy Gradient 방식을 정리하고 있다.    
+
+이는 매우 간단하고 다른 메타 러닝 알고리즘, 그리고 멀티테스크에 쉽게 적용할 수 있다는 장점이 있다    
+
+하지만 기울기가 high-variance 하게 제공되기 때문에 학습하기가 어렵고 오직 on-policy의 데이터만을 사용해야 하므로
+기울기를 예측할때 다시 데이터를 사용할 수 없다는 점에서 효율성이 낮다.
+
+---
+
+### Value-Based RL 
+
+![image](https://user-images.githubusercontent.com/65720894/180632158-2da05711-da70-4e0a-a589-463e4004353c.png)
+
+또다른 방법은 동적할당법으 사용하여 순차적으로 최대의 value를 얻는 방법이 있다.
+
+여기서는 두가지 함수를 소개하는데 하나는 state만을 인자로 받아 보상을 추정하는 vlaye function 그리고
+state-action pair가 얼마나 좋은 결과를 보이는지에 대해 Q-function가 그것이다.    
+
+
+이 강의에서는 Q function에 대해 주로 소개하고 특정 policy pi_star에 대해 학습은 Q_star를 찾는 것이라고 마한다.
+Q_star는 Q_1 부터 시작하여 모든 경로에서 얻은 값의 평균으로 최종 보상값? 정도로 보면 좋을 것같다. 
+
+![image](https://user-images.githubusercontent.com/65720894/180632311-ee40f100-7ba5-410a-ba5e-6760f915c79e.png)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
