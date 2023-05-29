@@ -2,6 +2,7 @@
 layout: post
 title: "[컨퍼런스 후기] 구름 : 명령어를 이해하는 오픈소스 언어 모델 KoAlphaca 개발기"
 categories: others
+tags: conference review
 comments: true
 ---
 
