@@ -3,12 +3,12 @@
 # Change `qwtel` to your shortname (used in the front matter to set a page's author, e.g. `author: qwtel`).
 theorydb:
   name:              HanSeungjin
-  email:             gkstmdwls1999@gmail.com
+  email:             onepromotion99@gmail.com
 
   # Used at the bottom of each page and at the top of the `about` layout
   # Markdown enabled, can use multiple paragraphs (enabled by `|`)
   about:             |
-    blog for computer science
+    Tech Blog
 
   # This photo will be used in the about section
   picture:
@@ -24,7 +24,7 @@ theorydb:
   social:
     #facebook:        cantouchmin
     # twitter:         <username>
-    # google:          <number>
+     google:          https://github.com/seungjindes
     # vk:              <username>
     # youtube:         <string_string_string>
     # vimeo:           <username>
@@ -46,7 +46,7 @@ theorydb:
     # pinterest:       <username>
     # foursquare:      <number>
     # yelp:            <string>
-    github:          LEFT-BEE
+    github:          seungjindes
     # stackoverflow:   <number/username>
     # npm:             <username>
     # hackernews:      <username>
