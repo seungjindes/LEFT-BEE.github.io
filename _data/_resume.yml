@@ -2,8 +2,8 @@
 # To use this file, rename it to `resume.yml` and delete `resume.json`.
 ---
   basics:
-    name: "Richard Hendricks"
-    label: "Programmer"
+    name: "Seungjin Han"
+    label: "ML/DL"
     picture: "https://placehold.it/126x126"
     email: ""
     phone: "(912) 555-4321"
