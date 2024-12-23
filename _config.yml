@@ -21,9 +21,9 @@ description:         >
   contact : onepromotion99@gmail.com
 
 # This should be the same author as first entry in `_data/authors.yml`
-# author:
-#   name:              HanSeungjin
-#   email:             gkstmdwls1999@gmail.com
+author:
+  name:              HanSeungjin
+  email:             onepromotion99@gmail.com
 
 # Fallback image and color
 image:               /assets/img/main_left.jpg
