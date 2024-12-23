@@ -2,11 +2,11 @@
 #  User configuration
 # -----------------------------------------------------------------------------
 
-title:               Codegongbang
+title:             HanSeungjin Blog  
 
 # The unique resource location of your page.
 # Set to `https://<username>.github.io` when hosting on GitHub Pages
-url:                 https://left-bee.github.io/
+url:                 https://seungjindes.github.io/
 
 # Set to '' when hosting a blog on GitHub Pages, ie on `//<username>.github.io`
 # Set to '/<reponame>' when using the `gh-pages` branch of a repository
@@ -18,12 +18,12 @@ url:                 https://left-bee.github.io/
 # A short description of the page, used in the sidebar and as fallback for the meta description tag.
 # Markdown enabled, but don't use more than one paragraph (enforced by `>`)
 description:         >
-  Make better future
+  contact : onepromotion99@gmail.com
 
 # This should be the same author as first entry in `_data/authors.yml`
-author:
-  name:              HanSeungjin
-  email:             gkstmdwls1999@gmail.com
+# author:
+#   name:              HanSeungjin
+#   email:             gkstmdwls1999@gmail.com
 
 # Fallback image and color
 image:               /assets/img/main_left.jpg
@@ -48,7 +48,7 @@ google_analytics: UA-214270379-1
 
 # Setting a disqus shortname will enable the comment section on pages with `comments: true` in the front matter
 disqus: True
-disqus_shortname: codegongbang
+disqus_shortname: HanSeungjin Blog 
 
 # This text will appear in the footer of every page. Markdown enabled.
 copyright:           ''
