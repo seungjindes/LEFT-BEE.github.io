@@ -14,8 +14,8 @@ I interested in Federated Learning, Multi-Modal and Few-shot Learning
 
 ## Education 
 
-M.Sc. in Applied Artificial Intelligence
-Mar 2025 ~ present
+M.Sc. in Applied Artificial Intelligence  
+Mar 2025 ~ present 
 Sungkyunkwan University
 
 B.Sc. in Software Engineering  
